@@ -1,0 +1,17 @@
+<div class="login-container">
+  <mat-card color="accent">
+    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" class="login-form-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Имя пользователя</mat-label>
+        <input formControlName="userName" matInput>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill">
+        <mat-label>Пароль</mat-label>
+        <input formControlName="userPassword" type="password" matInput>
+      </mat-form-field>
+      <button mat-raised-button type="submit" color="primary">Авторизоваться</button>
+      <a mat-raised-button color="accent" href="http://vgg.by/">Перейти на сайт</a>
+    </form>
+  </mat-card>
+</div>
