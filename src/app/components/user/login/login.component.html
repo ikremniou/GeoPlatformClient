@@ -1,16 +1,23 @@
-<div class="login-container">
-  <mat-card color="accent">
-    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" class="login-form-container">
+<div fxLayout="row" fxLayout.lt-md="column" class="login-container" fxLayoutAlign="center center">
+  <div fxLayoutAlign="center center" fxLayoutGap="26px">
+    <img alt="ВитГеоСтрой" src="https://i.ibb.co/3zhfX6h/image.png" fxFlex="1 1 40%" fxFlex.lt-md="1 1 33%" />
+    <img alt="Строитель" src="https://i.ibb.co/gFVZ77L/image.png" fxFlex="1 1 40%" fxFlex.lt-md="1 1 33%" />
+  </div>
+  <mat-card color="accent" fxFlexOrder="3">
+    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" fxLayout="column" fxLayoutGap="5px">
       <mat-form-field appearance="fill">
         <mat-label>Имя пользователя</mat-label>
         <input formControlName="userName" matInput>
       </mat-form-field>
-      <br>
       <mat-form-field appearance="fill">
         <mat-label>Пароль</mat-label>
         <input formControlName="userPassword" type="password" matInput>
       </mat-form-field>
-      <button mat-raised-button type="submit" color="primary">Авторизоваться</button>
+      <button mat-raised-button type="submit" color="primary">
+        <span *ngIf="!isLoginInProgress">Авторизоваться</span>
+        <mat-progress-spinner *ngIf="isLoginInProgress" mode="indeterminate" color="warn" diameter="20">
+        </mat-progress-spinner>
+      </button>
       <a mat-raised-button color="accent" href="http://vgg.by/">Перейти на сайт</a>
     </form>
   </mat-card>
