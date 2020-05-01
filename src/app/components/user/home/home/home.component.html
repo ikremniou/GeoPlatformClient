@@ -1,0 +1,19 @@
+<div fxLayout="row" fxLayoutGap="16px" class="content-container">
+    <div *ngFor="let feature of applicationFeatures">
+        <mat-card fxFlex>
+          <mat-card-header>
+            <mat-card-title>{{ feature.title }}</mat-card-title>
+            <mat-card-subtitle>{{ feature.subtitle }}</mat-card-subtitle>
+            <img mat-card-avatar src="https://i.ibb.co/3zhfX6h/image.png" />
+          </mat-card-header>
+      
+          <mat-card-content>Контент здесь Контент здесь Контент здесь Контент здесь Контент здесь Контент здесь Контент здесь
+            Контент здесьКонтент здесьКонтент здесь</mat-card-content>
+          <mat-card-actions>
+            <button mat-button>LIKE</button>
+            <button mat-button>SHARE</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+</div>
+

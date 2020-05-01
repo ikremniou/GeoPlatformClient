@@ -1,3 +1,4 @@
+import { ToolbarService } from './../../services/subjects/toolbar.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./toolbar.component.less']
 })
 export class ToolbarComponent implements OnInit {
+  public toolbarTitle = 'ВитГеоГрупп'
 
-  constructor() { }
+  constructor(private readonly _toolbarService: ToolbarService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this._toolbarService.onToolbarTitleChanged().subscribe({
+      next: (toolbarTitle: string) => {
+        this.toolbarTitle = toolbarTitle;
+      }
+    })
   }
-
 }

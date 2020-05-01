@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, Subscription, Subscribable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -10,6 +10,8 @@ import { PasswordTokenModel } from 'src/app/models/auth/password-token.model';
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly logOutSubject: Subject<void> = new Subject();
+  private readonly logInSubject: Subject<void> = new Subject();
   private readonly _passwordTokenEndpoint = environment.serviceUrl + '/api/passwordToken';
   private readonly _assessTokenKey = 'access_token';
   private _applicationToken: string;
@@ -24,28 +26,39 @@ export class AuthService {
       requestFormData).pipe(map(rawToken => {
         this._applicationToken = rawToken.access_token;
         localStorage.setItem(this._assessTokenKey, this._applicationToken);
+        this.logInSubject.next();
       }));
   }
 
   public logOut() {
     this._applicationToken = undefined;
     localStorage.removeItem(this._assessTokenKey);
+    this.logOutSubject.next();
   }
 
   public getAccessToken(): string {
     if (!this._applicationToken) {
-      this._applicationToken = localStorage.getItem(this._applicationToken);
+      this._applicationToken = localStorage.getItem(this._assessTokenKey);
     }
     return this._applicationToken;
   }
 
-  public isSessionAlive(): boolean {
+  public isTokenExpired(): boolean {
     const appToken = this.getAccessToken();
     if (appToken) {
       const decodedToken = JwtDecode<PasswordTokenModel>(appToken);
-      // check exp time
-      return true;
+      if (decodedToken.exp * 1000 > Date.now()) {
+        return false;
+      }
     }
-    return false;
+    return true;
+  }
+
+  public onUserLogIn(): Subscribable<void> {
+    return this.logInSubject;
+  }
+
+  public onUserLogOut(): Subscribable<void> {
+    return this.logOutSubject;
   }
 }

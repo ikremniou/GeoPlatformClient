@@ -13,13 +13,15 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HomeComponent } from './components/user/home/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ToolbarComponent,
-    FooterComponent
+    FooterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
