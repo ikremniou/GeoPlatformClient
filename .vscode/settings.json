@@ -2,5 +2,14 @@
     "cSpell.words": [
         "vggp"
     ],
-    "cSpell.language": "en,ru"
+    "cSpell.language": "en,ru",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/node_modules": true
+    }
 }
