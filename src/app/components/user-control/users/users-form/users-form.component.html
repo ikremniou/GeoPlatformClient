@@ -1,0 +1,14 @@
+<form class="edit-user-form" [formGroup]="userForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Логин</mat-label>
+    <input matInput name="username" formControlName="username" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Почта</mat-label>
+    <input matInput name="email" formControlName="email" />
+  </mat-form-field>
+  <mat-radio-group class="status-radio-group" formControlName="status">
+    <mat-radio-button name="status" value="active">Активирован</mat-radio-button>
+    <mat-radio-button name="status" value="blocked">Заблокирован</mat-radio-button>
+  </mat-radio-group>
+</form>

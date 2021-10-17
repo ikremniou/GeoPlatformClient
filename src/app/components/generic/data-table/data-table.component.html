@@ -1,0 +1,87 @@
+<div class="table-container mat-elevation-z8">
+  <div class="customize-table-container">
+    <div *ngIf="dataTableOptions?.actions?.add" class="customize-add-entity">
+      <button mat-raised-button>
+        <mat-icon>add</mat-icon>
+        <span>{{ entityMetadata?.displayName }}</span>
+      </button>
+    </div>
+  </div>
+  <div class="content-table-wrapper">
+    <div class="table-shutter">
+      <div *ngIf="isDataLoading" class="shutter-content">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div *ngIf="tableMessage" class="shutter-content mat-h2">
+        <span>{{ tableMessage }}</span>
+      </div>
+    </div>
+    <table class="content-table" mat-table [dataSource]="dataSource">
+      <ng-container *ngFor="let descriptor of tableDescription" [matColumnDef]="descriptor.name">
+        <th mat-header-cell *matHeaderCellDef>{{ descriptor.displayName }}</th>
+        <td mat-cell *matCellDef="let dataEntry">
+          {{ descriptor.view ? descriptor.view(dataEntry[descriptor.name]) : dataEntry[descriptor.name] }}
+        </td>
+      </ng-container>
+
+      <ng-content></ng-content>
+
+      <ng-container matColumnDef="actions" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let dataEntry">
+          <button fxHide.gt-xs mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngIf="dataTableOptions?.actions?.view" (click)="viewEntity(dataEntry)">
+              <mat-icon color="primary">remove_red_eye</mat-icon>
+              <span>Просмотр</span>
+            </button>
+            <button mat-menu-item *ngIf="dataTableOptions?.actions?.edit" (click)="editEntity(dataEntry)">
+              <mat-icon color="basic">edit</mat-icon>
+              <span>Редактировать</span>
+            </button>
+            <button mat-menu-item *ngIf="dataTableOptions?.actions?.delete" (click)="deleteEntity(dataEntry)">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Удалить</span>
+            </button>
+          </mat-menu>
+
+          <div *ngIf="dataEntry == hoveredEntry" fxHide.lt-sm class="actions-container">
+            <button
+              *ngIf="dataTableOptions?.actions?.view"
+              title="Просмотр"
+              mat-icon-button
+              color="primary"
+              (click)="viewEntity(dataEntry)">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+            <button
+              *ngIf="dataTableOptions?.actions?.edit"
+              title="Редактировать"
+              mat-icon-button
+              color="basic"
+              (click)="editEntity(dataEntry)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              *ngIf="dataTableOptions?.actions?.delete"
+              title="Удалить"
+              mat-icon-button
+              color="warn"
+              (click)="deleteEntity(dataEntry)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+      <tr
+        mat-row
+        (mouseenter)="rowEnter(row)"
+        (mouseleave)="rowExit()"
+        *matRowDef="let row; columns: displayColumns"></tr>
+    </table>
+  </div>
+</div>

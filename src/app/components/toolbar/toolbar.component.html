@@ -1,6 +1,8 @@
 <mat-toolbar color="primary">
-  <span i18n="PlatformHeader">
-    Группа геотехнических компаний {{ activePage ? "–" : "" }}
-    {{ activePage }}</span
-  >
+  <span i18n="PlatformHeader" fxHide.lt-sm>Группа геотехнических компаний {{ activePage ? '–' : '' }}</span>
+  <span>&nbsp;{{ activePage }}</span>
+  <span class="spacer"></span>
+  <button *ngIf="isLoggedIn" mat-icon-button (click)="logOut()">
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>

@@ -1,0 +1,10 @@
+<h1 *ngIf="dialogData.title" mat-dialog-title>{{ dialogData.title }}</h1>
+<div>
+    <ng-content>
+    </ng-content>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onDialogCancel()">Отмена</button>
+  <button mat-button [disabled]="!entityForm.isValid()" (click)="onSubmitEdit()">Сохранить</button>
+</div>
+

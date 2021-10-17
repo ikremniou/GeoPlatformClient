@@ -1,0 +1,46 @@
+$z-index-customize: 2
+$z-index-shutter: 3
+$shutter-size: 100px
+
+.table-container
+    margin: 8px
+
+table
+    width: 100%
+
+.mat-cell, .mat-header-cell
+    padding-left: 16px
+    padding-right: 16px
+
+.actions-container
+    display: flex
+
+.content-table-wrapper
+    overflow: auto
+    min-height: $shutter-size
+
+.mat-column-actions
+    width: 120px
+
+.customize-table-container
+    display: flex
+    justify-content: flex-end
+
+.customize-add-entity
+    right: 0px
+    button
+        border-radius: 0px
+        z-index: $z-index-customize
+
+.table-shutter
+    position: relative
+    .shutter-content
+        position: absolute
+        display: flex
+        align-items: center
+        justify-content: center
+        min-height: $shutter-size
+        background: rgba(0,0 ,0 , 0.20)
+        left: 0
+        right: 0
+        z-index: $z-index-shutter

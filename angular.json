@@ -8,7 +8,7 @@
   "projects": {
     "vggp-client-angular": {
       "i18n": {
-        "sourceLocale": "ru-RU"
+        "sourceLocale": "ru"
       },
       "projectType": "application",
       "schematics": {
