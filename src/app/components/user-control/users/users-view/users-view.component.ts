@@ -1,10 +1,10 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogData } from 'src/app/components/generic/entity-dialog/entity-dialog.component';
 import { localeMessages } from 'src/app/local-locale';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
-import { UserModel } from 'src/app/models/user.model';
+import { DialogData } from 'src/app/misc/entity-dialog-data';
+import { UserModel } from 'src/app/models/user/user.model';
 import { HeaderService } from 'src/app/services/header/header.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -36,9 +36,11 @@ export class UsersViewComponent implements OnInit, DataTableConsumer<UserModel> 
   public async edit(entityModel: UserModel): Promise<UserModel> {
     return new Promise<UserModel>((resolve) => {
       const dialogData: DialogData<UserModel> = {
-        type: 'edit',
-        entity: entityModel,
         title: localeMessages.editUser,
+        form: {
+          model: entityModel,
+          type: { isEdit: true },
+        },
       };
       this._dialog
         .open(this.editUserRef, { data: dialogData })

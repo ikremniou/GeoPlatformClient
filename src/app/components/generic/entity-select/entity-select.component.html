@@ -1,0 +1,14 @@
+<mat-form-field appearance="fill">
+  <mat-label>{{ label }}</mat-label>
+  <input matInput type="text" name="entity" [formControl]="entityControl" [matAutocomplete]="complete" />
+  <mat-autocomplete #complete="matAutocomplete" [displayWith]="displayWith">
+    <mat-option *ngIf="isLoading">
+      <mat-progress-bar mode="buffer"></mat-progress-bar>
+    </mat-option>
+    <div *ngFor="let entity of entities">
+      <mat-option [value]="entity">
+        <ng-template [ngTemplateOutlet]="templateRef" [ngTemplateOutletContext]="{ $implicit: entity }"> </ng-template>
+      </mat-option>
+    </div>
+  </mat-autocomplete>
+</mat-form-field>

@@ -1,10 +1,23 @@
 <h1 *ngIf="dialogData.title" mat-dialog-title>{{ dialogData.title }}</h1>
 <div>
-    <ng-content>
-    </ng-content>
+  <ng-content> </ng-content>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button (click)="onDialogCancel()">Отмена</button>
-  <button mat-button [disabled]="!entityForm.isValid()" (click)="onSubmitEdit()">Сохранить</button>
+  <button mat-stroked-button (click)="onDialogCancel()">
+    {{ dialogData.form.type.isView ? 'Ок' : 'Отмена' }}
+  </button>
+  <button
+    mat-stroked-button
+    *ngIf="dialogData.form.type.isEdit"
+    [disabled]="!entityForm.isValid()"
+    (click)="onSubmitEdit()">
+    Сохранить
+  </button>
+  <button
+    mat-stroked-button
+    *ngIf="dialogData.form.type.isAdd"
+    [disabled]="!entityForm.isValid()"
+    (click)="onSubmitAdd()">
+    Добавить
+  </button>
 </div>
-

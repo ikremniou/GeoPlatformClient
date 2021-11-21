@@ -1,0 +1,11 @@
+<form [formGroup]="invitationForm">
+  <app-entity-select
+    #auto
+    formControlName="worker"
+    [dataService]="dataService"
+    [displayWith]="displayWorker"
+    [entityParts]="workerFilterParts"
+    label="Выберите рабочего">
+    <ng-template let-entity> {{ entity.lastName }} {{ entity.firstName }} {{ entity.middleName }} </ng-template>
+  </app-entity-select>
+</form>

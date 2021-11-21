@@ -1,4 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MaterialModule } from 'src/app/modules/material.module';
 
 import { ToolbarComponent } from './toolbar.component';
 
@@ -8,9 +12,9 @@ describe('ToolbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToolbarComponent ]
-    })
-    .compileComponents();
+      declarations: [ToolbarComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule, FlexLayoutModule, MaterialModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

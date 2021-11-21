@@ -3,19 +3,22 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError, map } from 'rxjs/operators';
+import { Claim } from 'src/app/models/claim.model';
+import { PlatformAbilityService } from '../ability/platform-ability.service';
 
 interface AccessObject {
   access_token: string;
   token_type: 'bearer';
+  claims: Claim[];
 }
 
 interface PlatformToken {
-  exp: number,
-  iat: number,
-  roleId: number,
-  userId: number,
-  username: string,
-  value: string
+  exp: number;
+  iat: number;
+  roleId: number;
+  userId: number;
+  username: string;
+  value: string;
 }
 
 @Injectable({
@@ -23,13 +26,13 @@ interface PlatformToken {
 })
 export class AuthService {
   public on = {
-    logIn: new Subject<void>()
-  }
-  private _localPlatformToken?: PlatformToken;
-  private readonly _localTokenKey = 'vggpToken'
+    logIn: new Subject<void>(),
+  };
+  private _platformToken?: PlatformToken;
+  private readonly _localTokenKey = 'vggpToken';
   private readonly _authPath = environment.apiBase + '/auth/';
 
-  constructor(private readonly _http: HttpClient) {}
+  constructor(private readonly _ability: PlatformAbilityService, private readonly _http: HttpClient) {}
 
   public loginUserLocal(username: string, password: string): Observable<void> {
     return this._http.post(`${this._authPath}local`, { username, password }).pipe(
@@ -43,41 +46,35 @@ export class AuthService {
         const accessObject = responseObject as AccessObject;
         const platformToken = this.extractJwtPayload(accessObject.access_token);
         if (platformToken) {
-          this._localPlatformToken = platformToken;
+          this._platformToken = platformToken;
           localStorage.setItem(this._localTokenKey, accessObject.access_token);
         }
+
+        this._ability.save(accessObject.claims);
         this.on.logIn.next();
       }),
     );
   }
 
   public isLoggedIn(): boolean {
-    if (this._localPlatformToken) {
-      if (this._localPlatformToken.exp * 1000 < Date.now()) {
+    if (this._platformToken) {
+      if (this._platformToken.exp * 1000 < Date.now()) {
         return false;
       }
       return true;
     }
 
-    const storedToken = localStorage.getItem(this._localTokenKey);
-    if (storedToken) {
-      const tokenObject = this.extractJwtPayload(storedToken);
-      if (!tokenObject || tokenObject.exp * 1000 < Date.now()) {
-        return false;
-      }
-      this._localPlatformToken = tokenObject;
-      return true;
-    }
-    return false;
+    return this.trySignInFromLocalStorage();
   }
 
   public getToken(): string | undefined {
-    return this._localPlatformToken?.value;
+    return this._platformToken?.value;
   }
 
   public logout(): void {
-    this._localPlatformToken = undefined;
+    this._platformToken = undefined;
     localStorage.setItem(this._localTokenKey, '');
+    this._ability.reset();
   }
 
   private extractJwtPayload(token: string): PlatformToken | undefined {
@@ -87,5 +84,20 @@ export class AuthService {
     } catch (e) {
       return undefined;
     }
+  }
+
+  private trySignInFromLocalStorage(): boolean {
+    const storedToken = localStorage.getItem(this._localTokenKey);
+    if (storedToken) {
+      const tokenObject = this.extractJwtPayload(storedToken);
+      if (!tokenObject || tokenObject.exp * 1000 < Date.now()) {
+        return false;
+      }
+      this._platformToken = tokenObject;
+      this._ability.load();
+
+      return true;
+    }
+    return false;
   }
 }

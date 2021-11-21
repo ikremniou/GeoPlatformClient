@@ -1,6 +1,22 @@
-<app-data-table
-  [entity]="entity"
-  [source]="this"
-  [columns]="displayColumns"
-  [options]="dataTableOptions"
-></app-data-table>
+<app-data-table [entity]="entity" [source]="this" [columns]="displayColumns" [options]="dataTableOptions">
+  <ng-container matColumnDef="worker">
+    <th mat-header-cell *matHeaderCellDef>Для сотрудника</th>
+    <td mat-cell *matCellDef="let dataEntry">
+      <button mat-button (click)="openWorker(dataEntry.worker)">
+        {{ dataEntry.worker.lastName }} {{ dataEntry.worker.firstName }} {{ dataEntry.worker.middleName }}
+      </button>
+    </td>
+  </ng-container>
+</app-data-table>
+
+<ng-template #invitationForm let-dialogRef="dialogRef" let-data>
+  <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data" [data-service]="invitationService">
+    <app-invitation-form #formControl [formData]="data.form"></app-invitation-form>
+  </app-entity-dialog>
+</ng-template>
+
+<ng-template #workerView let-dialogRef="dialogRef" let-data>
+  <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data">
+    <app-worker-form #formControl [formData]="data.form"></app-worker-form>
+  </app-entity-dialog>
+</ng-template>

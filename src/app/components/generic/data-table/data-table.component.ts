@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { localeMessages, modelLocaleStrings } from 'src/app/local-locale';
+import { AfterContentInit, AfterViewInit, Component, ContentChildren, Input, OnInit, QueryList, ViewChild } from '@angular/core';
+import { localeMessages } from 'src/app/local-locale';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
-import { DataService } from 'src/app/misc/service/data-service';
 import { DataTableField, dataTableMetadataStore, EntityMetadata } from 'src/app/misc/data-table/metadata-store';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
+import { MatColumnDef, MatHeaderRowDef, MatRowDef, MatTable } from '@angular/material/table';
 
 interface Constructable<T> {
   name: string;
@@ -15,7 +15,12 @@ interface Constructable<T> {
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.sass'],
 })
-export class DataTableComponent<EntityType> implements OnInit {
+export class DataTableComponent<EntityType> implements OnInit, AfterContentInit  {
+  @ContentChildren(MatHeaderRowDef) public headerRowDefs!: QueryList<MatHeaderRowDef>;
+  @ContentChildren(MatRowDef) public rowDefs!: QueryList<MatRowDef<EntityType>>;
+  @ContentChildren(MatColumnDef) public columnDefs!: QueryList<MatColumnDef>;
+  @ViewChild(MatTable, { static: true }) public wrappedTable!: MatTable<EntityType>;
+
   public tableMessage?: string;
   public hoveredEntry?: EntityType;
   public isDataLoading = true;
@@ -33,6 +38,11 @@ export class DataTableComponent<EntityType> implements OnInit {
   public dataSource: EntityType[] = [];
 
   constructor() {}
+  public ngAfterContentInit(): void {
+    this.columnDefs.forEach((columnDef) => this.wrappedTable.addColumnDef(columnDef));
+    this.rowDefs.forEach((rowDef) => this.wrappedTable.addRowDef(rowDef));
+    this.headerRowDefs.forEach((headerRowDef) => this.wrappedTable.addHeaderRowDef(headerRowDef));
+  }
 
   public ngOnInit(): void {
     this.handleTableOptions(this.dataTableOptions);
@@ -49,9 +59,24 @@ export class DataTableComponent<EntityType> implements OnInit {
     }
   }
 
+  public async addEntity(): Promise<void> {
+    if (this.consumer.add) {
+      const newEntity = await this.consumer.add?.();
+      if (newEntity) {
+        this.tableMessage = undefined;
+        this.dataSource = this.dataSource.concat(newEntity);
+      }
+    }
+  }
+
   public async editEntity(entityModel: EntityType): Promise<void> {
     if (entityModel) {
-      const editedModel = await this.consumer.edit?.(entityModel);
+      if (!this.consumer.edit) {
+        console.warn('[DataTable] Unable to edit the entity without consumer implementation');
+        return;
+      }
+
+      const editedModel = await this.consumer.edit(entityModel);
       if (editedModel) {
         Object.assign(entityModel, editedModel);
       }
@@ -60,13 +85,22 @@ export class DataTableComponent<EntityType> implements OnInit {
 
   public async viewEntity(entityModel: EntityType): Promise<void> {
     if (entityModel) {
-      await this.consumer.view?.(entityModel);
+      if (!this.consumer.view) {
+        console.warn('[DataTable] Unable to view the entity without consumer implementation');
+        return;
+      }
+      await this.consumer.view(entityModel);
     }
   }
 
   public async deleteEntity(entityModel: EntityType): Promise<void> {
     if (entityModel) {
-      await this.consumer.delete?.(entityModel);
+      if (!this.consumer.delete) {
+        console.warn('[DataTable] Unable to delete the entity without consumer implementation');
+        return;
+      }
+
+      await this.consumer.delete(entityModel);
       this.deleteFromTable(entityModel);
     }
   }

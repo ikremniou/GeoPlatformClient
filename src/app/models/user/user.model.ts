@@ -1,6 +1,6 @@
-import { TableField } from '../misc/data-table/field-decorator';
-import { modelLocaleStrings } from '../local-locale';
-import { TableEntity } from '../misc/data-table/entity-derator';
+import { TableField } from '../../misc/data-table/field-decorator';
+import { modelLocaleStrings } from '../../local-locale';
+import { TableEntity } from '../../misc/data-table/entity-derator';
 
 type UserStatus = 'active' | 'blocked';
 

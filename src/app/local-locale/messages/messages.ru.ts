@@ -1,11 +1,30 @@
 export const localeMessages = {
-    userEditedSuccessfully: 'Данные пользователя успешно изменены',
-    noDataEntriesInTable: 'Данные не найдены',
-    editUser: 'Редактировать пользователя',
-    headers: {
-        invitations: 'Приглашения',
-        homePage: 'Главное меню',
-        users: 'Пользователи',
-        workers: 'Рабочие'
-    }
-}
+  unknownError: 'Произошла неизвестная ошибка. Обратитесь к администратору',
+  userEditedSuccessfully: 'Данные пользователя успешно изменены',
+  noDataEntriesInTable: 'Данные не найдены',
+  editUser: 'Редактировать пользователя',
+  addWorker: 'Добавить рабочего',
+  editWorker: 'Редактировать рабочего',
+  viewWorker: 'Просмотр рабочего',
+  addInvitation: 'Добавить приглашение',
+  userRegisteredSuccess: 'Регистрация пользователя произошла успешно. Войдите в систему используя свой логин и пароль',
+  userRegisterFailed: 'Не удалось зарегистрировать пользователя. Сервер вернул ошибку',
+  error: 'Ошибка',
+  headers: {
+    invitations: 'Приглашения',
+    homePage: 'Главное меню',
+    users: 'Пользователи',
+    workers: 'Рабочие',
+    register: 'Регистрация',
+    login: 'Авторизация',
+    mainMenu: 'Главное меню'
+  },
+  navigation: {
+    users: 'Пользователи',
+    workers: 'Рабочие',
+    security: 'Безопасность',
+    projects: 'Проекты',
+    tasks: 'Задачи',
+    time: 'Время',
+  },
+};

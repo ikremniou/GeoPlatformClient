@@ -8,8 +8,8 @@ import { DataService } from 'src/app/misc/service/data-service';
 import { Worker } from 'src/app/models/worker.model';
 
 const GetWorkers = gql`
-  query Worker_GetAll {
-    workers {
+  query Worker_GetAll($filter: WorkerFilterInput) {
+    workers(filter: $filter) {
       id
       firstName
       middleName
@@ -29,15 +29,70 @@ const RemoveWorker = gql`
   }
 `;
 
+const AddWorker = gql`
+  mutation Add_Worker($worker: CreateWorkerInput!) {
+    createWorker(createWorkerInput: $worker) {
+      id
+      firstName
+      middleName
+      lastName
+    }
+  }
+`;
+
+const UpdateWorker = gql`
+  mutation Update_Worker($worker: UpdateWorkerInput!) {
+    updateWorker(updateWorkerInput: $worker) {
+      id
+      firstName
+      middleName
+      lastName
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root',
 })
 export class WorkerService implements DataService<Worker> {
   constructor(private readonly _apollo: Apollo) {}
-  public getAll(limit?: number): Observable<Worker[]> {
+  public add(worker: Worker): Observable<Worker> {
+    return this._apollo
+      .mutate({
+        mutation: AddWorker,
+        variables: {
+          worker,
+        },
+      })
+      .pipe(
+        map((fetchResult: FetchResult<any>) => {
+          return plainToClass(Worker, fetchResult.data.createWorker);
+        }),
+      );
+  }
+
+  public patch(worker: Worker): Observable<Worker> {
+    return this._apollo
+      .mutate({
+        mutation: UpdateWorker,
+        variables: {
+          worker,
+        },
+      })
+      .pipe(
+        map((fetchResult: FetchResult<any>) => {
+          return plainToClass(Worker, fetchResult.data.updateWorker);
+        }),
+      );
+  }
+
+  public getAll(filter?: any): Observable<Worker[]> {
     return this._apollo
       .query({
         query: GetWorkers,
+        variables: {
+          filter
+        }
       })
       .pipe(
         map((queryResult: ApolloQueryResult<any>) => {
@@ -51,8 +106,8 @@ export class WorkerService implements DataService<Worker> {
       .mutate({
         mutation: RemoveWorker,
         variables: {
-          workerId: entity.id
-        } 
+          workerId: entity.id,
+        },
       })
       .pipe(
         map((fetchRequest: FetchResult<any>) => {

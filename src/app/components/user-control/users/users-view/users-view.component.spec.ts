@@ -1,16 +1,19 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DataTableComponent } from 'src/app/components/generic/data-table/data-table.component';
+import { MaterialModule } from 'src/app/modules/material.module';
 
 import { UsersViewComponent } from './users-view.component';
 
-describe('UsersComponent', () => {
+describe('UsersViewComponent', () => {
   let component: UsersViewComponent;
   let fixture: ComponentFixture<UsersViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UsersViewComponent ]
-    })
-    .compileComponents();
+      declarations: [UsersViewComponent, DataTableComponent],
+      imports: [HttpClientTestingModule, MaterialModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

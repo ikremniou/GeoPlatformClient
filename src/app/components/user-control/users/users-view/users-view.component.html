@@ -7,6 +7,6 @@
 
 <ng-template #editUser let-dialogRef="dialogRef" let-data>
   <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data" [data-service]="userService">
-    <app-users-form #formControl [userModel]="data.entity"></app-users-form>
+    <app-users-form #formControl [formData]="data.formData"></app-users-form>
   </app-entity-dialog>
 </ng-template>

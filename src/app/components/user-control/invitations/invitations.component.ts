@@ -1,30 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { localeMessages } from 'src/app/local-locale';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
-import { Invitation } from 'src/app/models/invitation.model';
+import { DialogData } from 'src/app/misc/entity-dialog-data';
+import { Invitation } from 'src/app/models/invite/invitation.model';
 import { HeaderService } from 'src/app/services/header/header.service';
 import { InvitationService } from 'src/app/services/invitation/invitation.service';
+import { Worker } from 'src/app/models/worker.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-invitations',
   templateUrl: './invitations.component.html',
   styleUrls: ['./invitations.component.sass'],
 })
-export class InvitationsComponent implements OnInit, DataTableConsumer<Invitation> {
+export class InvitationsComponent implements DataTableConsumer<Invitation> {
+  @ViewChild('invitationForm')
+  public invitationForm!: TemplateRef<any>;
+  @ViewChild('workerView')
+  public workerView!: TemplateRef<any>;
+
   public entity = Invitation;
-  public displayColumns = ['id'];
-  public dataTableOptions: DataTableOptions = { actions: { delete: true, add: true } };
+  public displayColumns = ['id', 'worker'];
+  public dataTableOptions: DataTableOptions = { actions: { delete: true, add: true, view: true } };
 
   constructor(
+    private readonly _router: Router,
+    private readonly _matDialog: MatDialog,
     private readonly _headerService: HeaderService,
-    private readonly _invitationService: InvitationService) {
-      this._headerService.changedHeader(localeMessages.headers.invitations)
-    }
-
-  ngOnInit(): void {}
+    public readonly invitationService: InvitationService,
+  ) {
+    this._headerService.changedHeader(localeMessages.headers.invitations);
+  }
 
   public getAll(): Promise<Invitation[]> {
-    return this._invitationService.getAll().toPromise();
+    return this.invitationService.getAll().toPromise();
+  }
+
+  public add(): Promise<Invitation> {
+    const dialogData: DialogData<Invitation> = {
+      title: localeMessages.addInvitation,
+      form: {
+        type: { isAdd: true },
+      },
+    };
+    return this.openDialog(dialogData);
+  }
+
+  public async view(entity: Invitation): Promise<void> {
+    this._router.navigate(['register'], { queryParams: { invitation: entity.id } });
+  }
+
+  public openWorker(worker: Worker): void {
+    const dialogData: DialogData<Worker> = {
+      title: localeMessages.viewWorker,
+      form: {
+        type: { isView: true },
+        model: worker,
+      },
+    };
+    this._matDialog.open(this.workerView, { data: dialogData });
+  }
+
+  private openDialog(dialogData: DialogData<Invitation>): Promise<Invitation> {
+    return new Promise<Invitation>((resolve) => {
+      this._matDialog
+        .open(this.invitationForm, { data: dialogData })
+        .afterClosed()
+        .subscribe((responseEntity) => {
+          resolve(responseEntity);
+        });
+    });
   }
 }

@@ -6,11 +6,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material/material.module';
+import { MaterialModule } from './modules/material.module';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
-import { RegisterComponent } from './components/register/register.component';
+import { RegisterComponent } from './components/user-control/register/register.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UserControlComponent } from './components/user-control/user-control.component';
 import { UsersViewComponent } from './components/user-control/users/users-view/users-view.component';
@@ -20,7 +20,15 @@ import { UsersFormComponent } from './components/user-control/users/users-form/u
 import { DataTableComponent } from './components/generic/data-table/data-table.component';
 import { EntityDialogComponent } from './components/generic/entity-dialog/entity-dialog.component';
 import { WorkersViewComponent } from './components/workers/workers-view.component';
-import { GraphQLModule } from './graphql.module';
+import { WorkersFormComponent } from './components/workers/worker-form/worker-form.component';
+import { GraphQLModule } from './modules/graphql.module';
+import { InvitationFormComponent } from './components/user-control/invitations/invitation-form/invitation-form.component';
+import { EntitySelectComponent } from './components/generic/entity-select/entity-select.component';
+import { ErrorInterceptor } from './intercept/error.interceptor';
+import { PlatformAbilityModule } from './modules/platform-ability.module';
+import { RolesComponent } from './components/security/roles/roles.component';
+import { ClaimsComponent } from './components/security/claims/claims.component';
+import { SecurityComponent } from './components/security/security.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +43,13 @@ import { GraphQLModule } from './graphql.module';
     UsersFormComponent,
     DataTableComponent,
     EntityDialogComponent,
-    WorkersViewComponent
+    WorkersViewComponent,
+    WorkersFormComponent,
+    InvitationFormComponent,
+    EntitySelectComponent,
+    RolesComponent,
+    ClaimsComponent,
+    SecurityComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,14 +59,20 @@ import { GraphQLModule } from './graphql.module';
     ReactiveFormsModule,
     HttpClientModule,
     FlexLayoutModule,
-    GraphQLModule
+    GraphQLModule,
+    PlatformAbilityModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

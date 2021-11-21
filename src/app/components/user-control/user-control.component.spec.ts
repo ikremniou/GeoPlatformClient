@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MaterialModule } from 'src/app/modules/material.module';
 
 import { UserControlComponent } from './user-control.component';
 
@@ -8,9 +10,9 @@ describe('UserControlComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserControlComponent ]
-    })
-    .compileComponents();
+      declarations: [UserControlComponent],
+      imports: [RouterTestingModule, MaterialModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

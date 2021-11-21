@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { EntityForm } from 'src/app/components/generic/entity-dialog/entity-dialog.component';
-import { UserModel } from 'src/app/models/user.model';
-import { UserService } from 'src/app/services/user/user.service';
+import { EntityForm } from 'src/app/misc/entity-form';
+import { EntityFormData } from 'src/app/misc/entity-form-data';
+import { UserModel } from 'src/app/models/user/user.model';
 
 @Component({
   selector: 'app-users-form',
@@ -11,25 +10,25 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./users-form.component.sass'],
 })
 export class UsersFormComponent implements OnInit, EntityForm<UserModel> {
-  @Input('userModel')
-  public userModel?: UserModel;
+  @Input('formData')
+  public formData!: EntityFormData<UserModel>;
   public userForm!: FormGroup;
 
   constructor() {}
 
   public getEntity(): UserModel {
-    return { id: this.userModel?.id, ...this.userForm.value };
+    return { id: this.formData.model?.id, ...this.userForm.value };
   }
 
   public isValid(): boolean {
-    return this.userForm?.valid || false;
+    return this.userForm.valid;
   }
 
   public ngOnInit(): void {
     this.userForm = new FormGroup({
-      username: new FormControl(this.userModel?.username, [Validators.required]),
-      email: new FormControl(this.userModel?.email, [Validators.required]),
-      status: new FormControl(this.userModel?.status, [Validators.required]),
+      username: new FormControl(this.formData.model?.username, [Validators.required]),
+      email: new FormControl(this.formData.model?.email, [Validators.required]),
+      status: new FormControl(this.formData.model?.status, [Validators.required]),
     });
   }
 }

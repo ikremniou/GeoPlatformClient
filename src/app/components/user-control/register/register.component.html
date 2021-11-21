@@ -1,0 +1,42 @@
+<mat-card>
+  <mat-card-title>Регистрация пользователя</mat-card-title>
+  <mat-error *ngIf="invitationMissing" color="warn">Регистрация невозможна без наличия приглашения</mat-error>
+  <mat-error *ngIf="lastServerErrors" color="warn">
+    <div *ngFor="let error of lastServerErrors">
+      <p>{{ error }}</p>
+    </div>
+  </mat-error>
+  <form class="register-user-form" [formGroup]="registerForm" (submit)="submitRegister()">
+    <mat-form-field appearance="fill">
+      <mat-label>Логин</mat-label>
+      <input matInput name="username" formControlName="username" />
+      <mat-error *ngIf="hasError('required', 'username')"> Введите логин пользователя </mat-error>
+      <mat-error *ngIf="hasError('minlength', 'username')"> Логин должен быть минимум в 5 символов </mat-error>
+      <mat-error *ngIf="hasError('maxlength', 'username')"> Логин не должен превышать 50 символов </mat-error>
+      <mat-error *ngIf="hasError('ascii', 'username')"> Допускаются только элементарные ASCII символы </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Почта</mat-label>
+      <input matInput type="email" name="email" formControlName="email" />
+      <mat-error *ngIf="hasError('required', 'email')"> Введите почту пользователя </mat-error>
+      <mat-error *ngIf="hasError('email', 'email')"> Неверный формат почты. Пример: "email@gmail.com" </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Пароль</mat-label>
+      <input matInput type="password" name="password" formControlName="password" />
+      <mat-error *ngIf="hasError('required', 'password')"> Введите пароль пользователя </mat-error>
+      <mat-error *ngIf="hasError('minlength', 'password')"> Минимальная длина пароля 8 символов </mat-error>
+      <mat-error *ngIf="hasError('maxlength', 'password')"> Максимальная длина пароля 25 символов </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Повторите пароль</mat-label>
+      <input matInput type="password" name="confirmPassword" formControlName="confirmPassword" />
+      <mat-error *ngIf="hasError('required', 'confirmPassword')"> Подтвердите пароль пользователя </mat-error>
+      <mat-error *ngIf="hasError('passwordNotMatch', 'confirmPassword')">
+        {{ registerForm.errors }}
+        Введённые пароли не совпадают
+      </mat-error>
+    </mat-form-field>
+    <button [disabled]="!registerForm.valid" mat-raised-button color="primary" type="submit">Зарегистрировать</button>
+  </form>
+</mat-card>

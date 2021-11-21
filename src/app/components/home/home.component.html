@@ -1,50 +1,12 @@
 <div class="home-container" fxLayout="row wrap">
-  <mat-card class="home-nav-item">
-    <mat-card-title>Пользователи</mat-card-title>
-    <mat-card-content>
-      <button mat-stroked-button class="display-button" (click)="navigate('user-control')">
-        <mat-icon>perm_identity</mat-icon>
-      </button>
-    </mat-card-content>
-  </mat-card>
-  <mat-card class="home-nav-item">
-    <mat-card-title>Рабочие</mat-card-title>
-    <mat-card-content>
-      <button mat-stroked-button class="display-button" (click)="navigate('workers')">
-        <mat-icon>engineering</mat-icon>
-      </button>
-    </mat-card-content>
-  </mat-card>
-  <mat-card class="home-nav-item">
-    <mat-card-title>Безопасность</mat-card-title>
-    <mat-card-content>
-      <button mat-stroked-button class="display-button">
-        <mat-icon>security</mat-icon>
-      </button>
-    </mat-card-content>
-  </mat-card>
-  <mat-card class="home-nav-item">
-    <mat-card-title>Проекты</mat-card-title>
-    <mat-card-content>
-      <button mat-stroked-button class="display-button">
-        <mat-icon>work_outline</mat-icon>
-      </button>
-    </mat-card-content>
-  </mat-card>
-  <mat-card class="home-nav-item">
-    <mat-card-title>Задачи</mat-card-title>
-    <mat-card-content>
-      <button mat-stroked-button class="display-button">
-        <mat-icon>done_outline</mat-icon>
-      </button>
-    </mat-card-content>
-  </mat-card>
-  <mat-card class="home-nav-item">
-    <mat-card-title>Время</mat-card-title>
-    <mat-card-content>
-      <button mat-stroked-button class="display-button">
-        <mat-icon>access_time</mat-icon>
-      </button>
-    </mat-card-content>
-  </mat-card>
+  <ng-container *ngFor="let item of navigation">
+    <mat-card class="home-nav-item" *ngIf="canView(item.subjects)">
+      <mat-card-title>{{ item.title }}</mat-card-title>
+      <mat-card-content>
+        <button mat-stroked-button class="display-button" (click)="navigate(item.to)">
+          <mat-icon>{{ item.icon }}</mat-icon>
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
 </div>

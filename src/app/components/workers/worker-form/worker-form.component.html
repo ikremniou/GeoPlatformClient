@@ -1,0 +1,14 @@
+<form class="worker-form" [formGroup]="workerForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Фамилия</mat-label>
+    <input matInput name="lastName" formControlName="lastName" [readonly]="formData.type.isView" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Имя</mat-label>
+    <input matInput name="firstName" formControlName="firstName" [readonly]="formData.type.isView" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Отчество</mat-label>
+    <input matInput name="middleName" formControlName="middleName" [readonly]="formData.type.isView" />
+  </mat-form-field>
+</form>

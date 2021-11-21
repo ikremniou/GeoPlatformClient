@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MaterialModule } from 'src/app/modules/material.module';
+import { DataTableComponent } from '../generic/data-table/data-table.component';
 
 import { WorkersViewComponent } from './workers-view.component';
 
@@ -8,9 +10,9 @@ describe('WorkersViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WorkersViewComponent ]
-    })
-    .compileComponents();
+      declarations: [WorkersViewComponent, DataTableComponent],
+      imports: [MaterialModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

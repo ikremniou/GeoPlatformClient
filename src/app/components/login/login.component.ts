@@ -1,7 +1,8 @@
 import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { localeMessages } from 'src/app/local-locale';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { HeaderService } from 'src/app/services/header/header.service';
 
@@ -21,9 +22,19 @@ export class LoginComponent implements OnInit {
     private readonly _router: Router,
     private readonly _snackBar: MatSnackBar,
     private readonly _authService: AuthService,
+    private readonly _activeRoute: ActivatedRoute,
     private readonly _headerService: HeaderService
   ) {
-    this._headerService.changedHeader('Авторизация');
+    this._headerService.changedHeader(localeMessages.headers.login);
+
+    this._activeRoute.queryParams.subscribe((params) => {
+      if (params.login) {
+        this.loginForm.value.username = params.login;
+      }
+      if (params.password) {
+        this.loginForm.value.password = params.password;
+      }
+    });
   }
 
   public ngOnInit(): void {
@@ -42,7 +53,7 @@ export class LoginComponent implements OnInit {
       (error) => {
         this.isLoading = false;
         console.log(`[AuthService] Auth failed: ${error.message}`);
-        this._snackBar.open(error.message, 'OK', { duration: 5000 });
+        this._snackBar.open(error.message, 'OK', { duration: 7000 });
       },
     );
   }
