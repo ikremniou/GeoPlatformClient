@@ -17,7 +17,7 @@ export const PlatformNavigation: PlatformPage[] = [
   {
     title: localeMessages.navigation.workers,
     icon: 'engineering',
-    to: 'workers',
+    to: 'workers-hub',
     subjects: 'Worker'
   },
   {

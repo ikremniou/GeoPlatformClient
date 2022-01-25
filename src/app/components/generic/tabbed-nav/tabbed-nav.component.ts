@@ -1,6 +1,15 @@
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TabbedNavEntry } from './tabbed-nav-entry';
 
-export class BaseTabbedComponent {
+@Component({
+  selector: 'app-tabbed-nav',
+  templateUrl: './tabbed-nav.component.html',
+  styleUrls: ['./tabbed-nav.component.sass']
+})
+export class TabbedNavComponent {
+  @Input()
+  public tabs: TabbedNavEntry[] = [];
   public activeLink: string;
 
   constructor(private readonly _router: Router, private readonly _activatedRoute: ActivatedRoute) {

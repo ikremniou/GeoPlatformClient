@@ -9,13 +9,13 @@ export const modelLocaleStrings = {
       blocked: 'Заблокирован',
     },
     _: {
-      name: 'Пользователь'
-    }
+      name: 'Пользователь',
+    },
   },
   invitation: {
     _: {
-      name: 'Приглашение'
-    }
+      name: 'Приглашение',
+    },
   },
   worker: {
     id: '№',
@@ -23,8 +23,14 @@ export const modelLocaleStrings = {
     lastName: 'Фамилия',
     middleName: 'Отчество',
     _: {
-      name: 'Рабочий'
-    }
-  }
-
+      name: 'Рабочий',
+    },
+  },
+  role: {
+    id: '№',
+    name: 'Наименование',
+    _: {
+      admin: 'Администратор',
+    },
+  },
 };

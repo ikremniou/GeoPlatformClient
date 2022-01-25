@@ -1,6 +1,13 @@
 <div class="app-container">
-  <app-toolbar></app-toolbar>
-  <div class="app-router">
-    <router-outlet></router-outlet>
-  </div>
+  <app-toolbar (menu-toggle)="sidenav.toggle()"></app-toolbar>
+  <mat-sidenav-container class="app-sidenav-container" class="app-sidenav-container">
+    <mat-sidenav #sidenav role="navigation">
+      <app-side-nav (item-selected)="sidenav.close()"></app-side-nav>
+    </mat-sidenav>
+    <mat-sidenav-content class="app-sidenav-content">
+      <div class="app-router">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

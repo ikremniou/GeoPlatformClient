@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BaseTabbedComponent } from '../generic/tabbed/base-tabbled.component';
+import { Component } from '@angular/core';
+import { TabbedNavEntry } from '../generic/tabbed-nav/tabbed-nav-entry';
+import { userControlMessages } from './locale/ru/messages.ru';
 
 @Component({
   selector: 'app-user-control',
   templateUrl: './user-control.component.html',
   styleUrls: ['./user-control.component.sass'],
 })
-export class UserControlComponent extends BaseTabbedComponent {
-  constructor(router: Router, activatedRoute: ActivatedRoute) {
-    super(router, activatedRoute)
-  }
+export class UserControlComponent {
+  public readonly userControlTabs: TabbedNavEntry[] = [
+    { link: 'users-view', name: userControlMessages.users },
+    { link: 'invitations', name: userControlMessages.invitations },
+  ];
 }

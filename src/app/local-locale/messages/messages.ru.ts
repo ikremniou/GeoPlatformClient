@@ -9,19 +9,20 @@ export const localeMessages = {
   addInvitation: 'Добавить приглашение',
   userRegisteredSuccess: 'Регистрация пользователя произошла успешно. Войдите в систему используя свой логин и пароль',
   userRegisterFailed: 'Не удалось зарегистрировать пользователя. Сервер вернул ошибку',
+  pleaseSignInAgainToUpdateToken: 'Пожалуйста, авторизуйтесь заново чтобы восстановить доступ к системе',
   error: 'Ошибка',
   headers: {
     invitations: 'Приглашения',
     homePage: 'Главное меню',
     users: 'Пользователи',
-    workers: 'Рабочие',
+    workers: 'Сотрудники',
     register: 'Регистрация',
     login: 'Авторизация',
     mainMenu: 'Главное меню'
   },
   navigation: {
     users: 'Пользователи',
-    workers: 'Рабочие',
+    workers: 'Сотрудники',
     security: 'Безопасность',
     projects: 'Проекты',
     tasks: 'Задачи',

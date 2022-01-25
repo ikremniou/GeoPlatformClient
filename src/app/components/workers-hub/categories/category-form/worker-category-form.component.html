@@ -1,0 +1,10 @@
+<form class="worker-category-form" [formGroup]="categoryForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Название</mat-label>
+    <mat-error *ngIf="categoryForm.hasError('required', 'name')">Обязательное поле</mat-error>
+    <mat-error *ngIf="categoryForm.hasError('maxlength', 'name')">
+      Максимальная длина поля - {{ maxNameLength }} символов
+    </mat-error>
+    <input matInput name="categoryName" formControlName="name" [readonly]="formData.type.isView" />
+  </mat-form-field>
+</form>

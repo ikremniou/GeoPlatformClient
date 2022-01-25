@@ -1,6 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './components/navigation/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { ClaimsComponent } from './components/security/claims/claims.component';
 import { RolesComponent } from './components/security/roles/roles.component';
@@ -9,8 +9,11 @@ import { InvitationsComponent } from './components/user-control/invitations/invi
 import { RegisterComponent } from './components/user-control/register/register.component';
 import { UserControlComponent } from './components/user-control/user-control.component';
 import { UsersViewComponent } from './components/user-control/users/users-view/users-view.component';
-import { WorkersViewComponent } from './components/workers/workers-view.component';
+import { WorkersViewComponent } from './components/workers-hub/workers/workers-view.component';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { WorkerCategoriesComponent } from './components/workers-hub/categories/worker-categories.component';
+import { WorkerPositionsComponent } from './components/workers-hub/positions/worker-positions.component';
+import { WorkersHubComponent } from './components/workers-hub/workers-hub.component';
 
 const routes: Routes = [
   {
@@ -76,9 +79,31 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'workers',
-    component: WorkersViewComponent,
+    path: 'workers-hub',
+    component: WorkersHubComponent,
     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'workers',
+        pathMatch: 'full'
+      },
+      {
+        path: 'workers',
+        component: WorkersViewComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'workers-categories',
+        component: WorkerCategoriesComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'workers-positions',
+        component: WorkerPositionsComponent,
+        canActivate: [AuthGuard],
+      }
+    ]
   },
 ];
 

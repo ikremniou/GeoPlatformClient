@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ApolloQueryResult, FetchResult } from '@apollo/client';
 import { Apollo, gql } from 'apollo-angular';
-import { plainToClass } from 'class-transformer';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { DataService } from 'src/app/misc/service/data-service';
 import { Worker } from 'src/app/models/worker.model';
+import { BaseQLService } from '../apollo/base-ql.service';
 
 const GetWorkers = gql`
-  query Worker_GetAll($filter: WorkerFilterInput) {
-    workers(filter: $filter) {
+  query GetAll($filter: String, $skip: Int, $take: Int) {
+    workers(filter: $filter, skip: $skip, take: $take) {
       id
       firstName
       middleName
@@ -19,7 +17,7 @@ const GetWorkers = gql`
 `;
 
 const RemoveWorker = gql`
-  mutation Remove_Worker($workerId: Int!) {
+  mutation Worker($workerId: Int!) {
     removeWorker(id: $workerId) {
       id
       firstName
@@ -30,7 +28,7 @@ const RemoveWorker = gql`
 `;
 
 const AddWorker = gql`
-  mutation Add_Worker($worker: CreateWorkerInput!) {
+  mutation Worker($worker: CreateWorkerInput!) {
     createWorker(createWorkerInput: $worker) {
       id
       firstName
@@ -54,65 +52,28 @@ const UpdateWorker = gql`
 @Injectable({
   providedIn: 'root',
 })
-export class WorkerService implements DataService<Worker> {
-  constructor(private readonly _apollo: Apollo) {}
+export class WorkerService extends BaseQLService implements DataService<Worker> {
+  constructor(apollo: Apollo) {
+    super(apollo);
+  }
+
   public add(worker: Worker): Observable<Worker> {
-    return this._apollo
-      .mutate({
-        mutation: AddWorker,
-        variables: {
-          worker,
-        },
-      })
-      .pipe(
-        map((fetchResult: FetchResult<any>) => {
-          return plainToClass(Worker, fetchResult.data.createWorker);
-        }),
-      );
+    return this.baseAdd(Worker, AddWorker, { worker });
   }
 
   public patch(worker: Worker): Observable<Worker> {
-    return this._apollo
-      .mutate({
-        mutation: UpdateWorker,
-        variables: {
-          worker,
-        },
-      })
-      .pipe(
-        map((fetchResult: FetchResult<any>) => {
-          return plainToClass(Worker, fetchResult.data.updateWorker);
-        }),
-      );
+    return this.basePatch(Worker, UpdateWorker, { worker });
   }
 
-  public getAll(filter?: any): Observable<Worker[]> {
-    return this._apollo
-      .query({
-        query: GetWorkers,
-        variables: {
-          filter
-        }
-      })
-      .pipe(
-        map((queryResult: ApolloQueryResult<any>) => {
-          return plainToClass<Worker, any[]>(Worker, queryResult.data.workers);
-        }),
-      );
+  public getAll(filter?: any, skip?: number, take?: number): Observable<Worker[]> {
+    if (filter) {
+      filter = JSON.stringify(filter);
+    }
+
+    return this.baseGetAll(Worker, GetWorkers, { filter, skip, take });
   }
 
-  public delete(entity: Worker): Observable<Worker> {
-    return this._apollo
-      .mutate({
-        mutation: RemoveWorker,
-        variables: {
-          workerId: entity.id,
-        },
-      })
-      .pipe(
-        map((fetchRequest: FetchResult<any>) => {
-          return plainToClass(Worker, fetchRequest.data.removeWorker);
-        }),
-      );
+  public delete(worker: Worker): Observable<Worker> {
+    return this.baseDelete(Worker, RemoveWorker, { workerId: worker.id });
   }
 }

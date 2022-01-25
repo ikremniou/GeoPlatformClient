@@ -1,6 +1,6 @@
 <div class="home-container" fxLayout="row wrap">
   <ng-container *ngFor="let item of navigation">
-    <mat-card class="home-nav-item" *ngIf="canView(item.subjects)">
+    <mat-card class="home-nav-item mat-elevation-z3" *ngIf="canView(item.subjects)">
       <mat-card-title>{{ item.title }}</mat-card-title>
       <mat-card-content>
         <button mat-stroked-button class="display-button" (click)="navigate(item.to)">

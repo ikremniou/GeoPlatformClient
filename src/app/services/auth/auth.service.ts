@@ -1,6 +1,6 @@
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { Claim } from 'src/app/models/claim.model';
@@ -26,13 +26,15 @@ interface PlatformToken {
 })
 export class AuthService {
   public on = {
-    logIn: new Subject<void>(),
+    logInStatusChanged: new BehaviorSubject<boolean>(false),
   };
   private _platformToken?: PlatformToken;
   private readonly _localTokenKey = 'vggpToken';
   private readonly _authPath = environment.apiBase + '/auth/';
 
-  constructor(private readonly _ability: PlatformAbilityService, private readonly _http: HttpClient) {}
+  constructor(private readonly _ability: PlatformAbilityService, private readonly _http: HttpClient) {
+    this.trySignInFromLocalStorage();
+  }
 
   public loginUserLocal(username: string, password: string): Observable<void> {
     return this._http.post(`${this._authPath}local`, { username, password }).pipe(
@@ -51,7 +53,7 @@ export class AuthService {
         }
 
         this._ability.save(accessObject.claims);
-        this.on.logIn.next();
+        this.on.logInStatusChanged.next(true);
       }),
     );
   }
@@ -63,8 +65,7 @@ export class AuthService {
       }
       return true;
     }
-
-    return this.trySignInFromLocalStorage();
+    return false;
   }
 
   public getToken(): string | undefined {
@@ -75,6 +76,7 @@ export class AuthService {
     this._platformToken = undefined;
     localStorage.setItem(this._localTokenKey, '');
     this._ability.reset();
+    this.on.logInStatusChanged.next(false);
   }
 
   private extractJwtPayload(token: string): PlatformToken | undefined {
@@ -86,18 +88,16 @@ export class AuthService {
     }
   }
 
-  private trySignInFromLocalStorage(): boolean {
+  private trySignInFromLocalStorage(): void {
     const storedToken = localStorage.getItem(this._localTokenKey);
     if (storedToken) {
       const tokenObject = this.extractJwtPayload(storedToken);
       if (!tokenObject || tokenObject.exp * 1000 < Date.now()) {
-        return false;
+        return;
       }
       this._platformToken = tokenObject;
       this._ability.load();
-
-      return true;
+      this.on.logInStatusChanged.next(true);
     }
-    return false;
   }
 }

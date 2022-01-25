@@ -7,7 +7,7 @@ import { PlatformValidators } from 'src/app/misc/validators';
 import { CreateUserModel } from 'src/app/models/user/create-user.model';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { HeaderService } from 'src/app/services/header/header.service';
-import { NotificationService } from 'src/app/services/notification/notification.service';
+import { NotificationService } from 'src/app/services/ui/notification/notification.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({

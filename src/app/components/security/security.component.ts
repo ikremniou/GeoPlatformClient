@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BaseTabbedComponent } from '../generic/tabbed/base-tabbled.component';
+import { TabbedNavEntry } from '../generic/tabbed-nav/tabbed-nav-entry';
+import { securityMessages } from './locale';
 
 @Component({
   selector: 'app-security',
   templateUrl: './security.component.html',
   styleUrls: ['./security.component.sass'],
 })
-export class SecurityComponent extends BaseTabbedComponent {
-  constructor(router: Router, activatedRoute: ActivatedRoute) {
-    super(router, activatedRoute);
-  }
+export class SecurityComponent {
+  public readonly securityTabs: TabbedNavEntry[] = [
+    { name: securityMessages.roles, link: 'roles' },
+    { name: securityMessages.claim, link: 'claims' },
+  ];
 }

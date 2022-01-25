@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -14,6 +14,9 @@ export class ToolbarComponent implements OnDestroy, OnInit {
   public isLoggedIn = false;
   private readonly _headerSubscription: Subscription;
 
+  @Output('menu-toggle')
+  public menuToggle: EventEmitter<void> = new EventEmitter();
+
   constructor(
     private readonly _router: Router,
     private readonly _authService: AuthService,
@@ -25,11 +28,8 @@ export class ToolbarComponent implements OnDestroy, OnInit {
   }
 
   public ngOnInit(): void {
-    if (this._authService.isLoggedIn()) {
-      this.isLoggedIn = true;
-    }
-    this._authService.on.logIn.subscribe(() => {
-      this.isLoggedIn = true;
+    this._authService.on.logInStatusChanged.subscribe((status) => {
+      this.isLoggedIn = status;
     });
   }
 
@@ -41,5 +41,9 @@ export class ToolbarComponent implements OnDestroy, OnInit {
     this.isLoggedIn = false;
     this._authService.logout();
     this._router.navigate(['login']);
+  }
+
+  public menuButtonClicked() {
+    this.menuToggle.next();
   }
 }

@@ -4,7 +4,7 @@ import { localeMessages } from 'src/app/local-locale';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { DialogData } from 'src/app/misc/entity-dialog-data';
-import { UserModel } from 'src/app/models/user/user.model';
+import { User } from 'src/app/models/user/user.model';
 import { HeaderService } from 'src/app/services/header/header.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -13,9 +13,9 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './users-view.component.html',
   styleUrls: ['./users-view.component.sass'],
 })
-export class UsersViewComponent implements OnInit, DataTableConsumer<UserModel> {
+export class UsersViewComponent implements OnInit, DataTableConsumer<User> {
   @ViewChild('editUser') public editUserRef!: TemplateRef<any>;
-  public entity = UserModel;
+  public entity = User;
   public displayColumns: string[] = ['id', 'username', 'email', 'status'];
   public dataTableOptions: DataTableOptions = { actions: { edit: true } };
 
@@ -29,13 +29,13 @@ export class UsersViewComponent implements OnInit, DataTableConsumer<UserModel> 
 
   public ngOnInit(): void {}
 
-  public getAll(): Promise<UserModel[]> {
+  public getAll(): Promise<User[]> {
     return this.userService.getAll().toPromise();
   }
 
-  public async edit(entityModel: UserModel): Promise<UserModel> {
-    return new Promise<UserModel>((resolve) => {
-      const dialogData: DialogData<UserModel> = {
+  public async edit(entityModel: User): Promise<User> {
+    return new Promise<User>((resolve) => {
+      const dialogData: DialogData<User> = {
         title: localeMessages.editUser,
         form: {
           model: entityModel,

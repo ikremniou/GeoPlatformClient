@@ -4,7 +4,7 @@ import { localeMessages } from 'src/app/local-locale';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { DialogData } from 'src/app/misc/entity-dialog-data';
-import { Invitation } from 'src/app/models/invite/invitation.model';
+import { Invite } from 'src/app/models/invite/invitation.model';
 import { HeaderService } from 'src/app/services/header/header.service';
 import { InvitationService } from 'src/app/services/invitation/invitation.service';
 import { Worker } from 'src/app/models/worker.model';
@@ -15,13 +15,13 @@ import { Router } from '@angular/router';
   templateUrl: './invitations.component.html',
   styleUrls: ['./invitations.component.sass'],
 })
-export class InvitationsComponent implements DataTableConsumer<Invitation> {
+export class InvitationsComponent implements DataTableConsumer<Invite> {
   @ViewChild('invitationForm')
   public invitationForm!: TemplateRef<any>;
   @ViewChild('workerView')
   public workerView!: TemplateRef<any>;
 
-  public entity = Invitation;
+  public entity = Invite;
   public displayColumns = ['id', 'worker'];
   public dataTableOptions: DataTableOptions = { actions: { delete: true, add: true, view: true } };
 
@@ -34,12 +34,12 @@ export class InvitationsComponent implements DataTableConsumer<Invitation> {
     this._headerService.changedHeader(localeMessages.headers.invitations);
   }
 
-  public getAll(): Promise<Invitation[]> {
+  public getAll(): Promise<Invite[]> {
     return this.invitationService.getAll().toPromise();
   }
 
-  public add(): Promise<Invitation> {
-    const dialogData: DialogData<Invitation> = {
+  public add(): Promise<Invite> {
+    const dialogData: DialogData<Invite> = {
       title: localeMessages.addInvitation,
       form: {
         type: { isAdd: true },
@@ -48,7 +48,7 @@ export class InvitationsComponent implements DataTableConsumer<Invitation> {
     return this.openDialog(dialogData);
   }
 
-  public async view(entity: Invitation): Promise<void> {
+  public async view(entity: Invite): Promise<void> {
     this._router.navigate(['register'], { queryParams: { invitation: entity.id } });
   }
 
@@ -63,8 +63,8 @@ export class InvitationsComponent implements DataTableConsumer<Invitation> {
     this._matDialog.open(this.workerView, { data: dialogData });
   }
 
-  private openDialog(dialogData: DialogData<Invitation>): Promise<Invitation> {
-    return new Promise<Invitation>((resolve) => {
+  private openDialog(dialogData: DialogData<Invite>): Promise<Invite> {
+    return new Promise<Invite>((resolve) => {
       this._matDialog
         .open(this.invitationForm, { data: dialogData })
         .afterClosed()

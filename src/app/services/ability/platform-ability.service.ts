@@ -1,6 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Ability, AbilityBuilder } from '@casl/ability';
 import { Claim } from 'src/app/models/claim.model';
+import { Activity } from '../../models/activity.model';
+import { Invite } from '../../models/invite/invitation.model';
+import { MonthlyTimeReview } from '../../models/monthly-time-review.model';
+import { Project } from '../../models/project.model';
+import { Role } from '../../models/role.model';
+import { TimeReport } from '../../models/time-report.model';
+import { User } from '../../models/user/user.model';
+import { Worker } from '../../models/worker.model';
+
+export const AbilitySubjects = {
+  User: User.name,
+  Role: Role.name,
+  Activity: Activity.name,
+  Invite: Invite.name,
+  MonthlyTimeReview: MonthlyTimeReview.name,
+  Project: Project.name,
+  TimeReport: TimeReport.name,
+  Worker: Worker.name,
+  Claim: Claim.name,
+};
+
+export enum AbilityActions {
+  Manage = 'manage',
+  Read = 'read',
+  Update = 'update',
+  Create = 'create',
+  Delete = 'delete',
+}
 
 @Injectable({
   providedIn: 'root',

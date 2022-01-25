@@ -1,5 +1,2 @@
-<nav mat-tab-nav-bar mat-stretch-tabs>
-  <a mat-tab-link [active]="activeLink === 'roles'" (click)="changeTab('roles')">Роли</a>
-  <a mat-tab-link [active]="activeLink === 'claims'" (click)="changeTab('claims')">Действия</a>
-</nav>
-<router-outlet></router-outlet>
+<app-tabbed-nav [tabs]="securityTabs">
+</app-tabbed-nav>

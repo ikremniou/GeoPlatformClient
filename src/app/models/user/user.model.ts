@@ -1,6 +1,6 @@
 import { TableField } from '../../misc/data-table/field-decorator';
 import { modelLocaleStrings } from '../../local-locale';
-import { TableEntity } from '../../misc/data-table/entity-derator';
+import { TableEntity } from '../../misc/data-table/entity-decorator';
 
 type UserStatus = 'active' | 'blocked';
 
@@ -13,7 +13,7 @@ function statusView(status: UserStatus): string {
 }
 
 @TableEntity({ displayName: modelLocaleStrings.userModel._.name })
-export class UserModel {
+export class User {
   @TableField(modelLocaleStrings.userModel.id)
   public id!: number;
   @TableField(modelLocaleStrings.userModel.username)

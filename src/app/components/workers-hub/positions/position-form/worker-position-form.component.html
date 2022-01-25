@@ -1,0 +1,24 @@
+<form class="worker-position-form" [formGroup]="positionForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Название</mat-label>
+    <input matInput name="positionName" formControlName="name" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="positionForm.hasError('required', 'name')">Обязательное поле</mat-error>
+    <mat-error *ngIf="positionForm.hasError('maxlength', 'name')">
+      Максимальная длина поля - {{ maxNameLength }} символов
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Тарифный оклад</mat-label>
+    <input
+      matInput
+      class="right-align"
+      type="number"
+      name="baseSalary"
+      formControlName="baseSalary"
+      [readonly]="formData.type.isView" />
+    <span matSuffix>руб.</span>
+
+    <mat-error *ngIf="positionForm.hasError('required', 'baseSalary')">Обязательное поле</mat-error>
+    <mat-error *ngIf="positionForm.hasError('min', 'baseSalary')">Минимальное значение - 0</mat-error>
+  </mat-form-field>
+</form>

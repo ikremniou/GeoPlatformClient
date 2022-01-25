@@ -1,4 +1,12 @@
-import { AfterContentInit, AfterViewInit, Component, ContentChildren, Input, OnInit, QueryList, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChild,
+} from '@angular/core';
 import { localeMessages } from 'src/app/local-locale';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { DataTableField, dataTableMetadataStore, EntityMetadata } from 'src/app/misc/data-table/metadata-store';
@@ -15,7 +23,7 @@ interface Constructable<T> {
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.sass'],
 })
-export class DataTableComponent<EntityType> implements OnInit, AfterContentInit  {
+export class DataTableComponent<EntityType> implements OnInit, AfterContentInit {
   @ContentChildren(MatHeaderRowDef) public headerRowDefs!: QueryList<MatHeaderRowDef>;
   @ContentChildren(MatRowDef) public rowDefs!: QueryList<MatRowDef<EntityType>>;
   @ContentChildren(MatColumnDef) public columnDefs!: QueryList<MatColumnDef>;
@@ -53,19 +61,22 @@ export class DataTableComponent<EntityType> implements OnInit, AfterContentInit 
 
   public handleTableOptions(dataTableOptions?: DataTableOptions) {
     if (dataTableOptions) {
-      if (dataTableOptions.actions) {
+      if (dataTableOptions.actions?.delete || dataTableOptions.actions?.edit || dataTableOptions.actions?.view) {
         this.displayColumns.push('actions');
       }
     }
   }
 
   public async addEntity(): Promise<void> {
-    if (this.consumer.add) {
-      const newEntity = await this.consumer.add?.();
-      if (newEntity) {
-        this.tableMessage = undefined;
-        this.dataSource = this.dataSource.concat(newEntity);
-      }
+    if (!this.consumer.add) {
+      console.warn('[DataTable] Unable to add entity without consumer implementation');
+      return;
+    }
+
+    const newEntity = await this.consumer.add();
+    if (newEntity) {
+      this.tableMessage = undefined;
+      this.dataSource = this.dataSource.concat(newEntity);
     }
   }
 

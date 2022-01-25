@@ -1,0 +1,46 @@
+<form class="role-form" [formGroup]="roleForm">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Роль</mat-label>
+    <input matInput name="lastName" formControlName="name" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="roleForm.controls['name'].hasError('required')"> Обязательно введите название роли </mat-error>
+  </mat-form-field>
+  <h2 *ngIf="claims.length > 0" class="claims-can-subheader">Разрешено:</h2>
+  <app-platform-shutter class="full-shutter" *ngIf="claimsLoading"></app-platform-shutter>
+  <div *ngIf="!claimsLoading" class="claims-holder" formArrayName="claims">
+    <mat-error *ngIf="roleForm.controls['claims'].hasError('required') && !formData.type.isView">
+      Выберите хотя бы одно правило
+    </mat-error>
+    <div class="claims-outer-container" *ngFor="let claimGroup of claims.controls; index as i; last as isLast">
+      <mat-error *ngIf="claimGroup.hasError('hasSame')">Субъект и действие уже заданы</mat-error>
+      <div
+        ngClass.lt-sm="claims-container-small"
+        ngClass.gt-xs="claims-container-medium"
+        fxLayoutGap.gt-xs="8px"
+        [formGroupName]="i">
+        <mat-form-field appearance="fill" gdArea="action">
+          <mat-label>Действие</mat-label>
+          <mat-select formControlName="action" (selectionChange)="actionSelectionChanged($event, claimGroup)">
+            <mat-option *ngFor="let action of availableActions" [value]="action">
+              {{ getActionView(action) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" gdArea="subject">
+          <mat-label>Субъекты</mat-label>
+          <mat-select formControlName="subject" (selectionChange)="subjectSelectionChanged($event, claimGroup)">
+            <mat-option *ngFor="let subject of availableSubjects" [value]="subject">
+              {{ getSubjectView(claimGroup, subject) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button fxFlexAlign="center" [disabled]="formData.type.isView" mat-icon-button (click)="deleteClaim(i)" gdArea="remove">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <mat-divider *ngIf="!isLast" class="full-width"></mat-divider>
+    </div>
+  </div>
+  <button *ngIf="!claimsLoading && !formData.type.isView" class="add-claim-button" mat-fab color="primary" (click)="addClaim()">
+    <mat-icon>add</mat-icon>
+  </button>
+</form>

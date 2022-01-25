@@ -1,0 +1,1 @@
+export * from './ru/worker-positions-messages.ru'

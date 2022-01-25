@@ -5,7 +5,7 @@ import { DialogData } from 'src/app/misc/entity-dialog-data';
 import { EntityForm } from 'src/app/misc/entity-form';
 import { ServerError } from 'src/app/misc/errors/server-error';
 import { DataService } from 'src/app/misc/service/data-service';
-import { NotificationService } from 'src/app/services/notification/notification.service';
+import { NotificationService } from 'src/app/services/ui/notification/notification.service';
 
 @Component({
   selector: 'app-entity-dialog',
@@ -28,10 +28,15 @@ export class EntityDialogComponent<EntityModel, CreateEntityModel = EntityModel,
   public async onSubmitEdit(): Promise<void> {
     if (this.entityForm.isValid()) {
       try {
+        if (!this.dataService.patch) {
+          console.warn('[EntityDialog] Cannot edit entity without DataService implementation');
+          return;
+        }
+
         const entity = this.entityForm.getEntity() as UpdateEntityModel;
-        const patchedEntity = await this.dataService.patch?.(entity).toPromise();
+        const patchedEntity = await this.dataService.patch(entity).toPromise();
         this.dialogRef.close(patchedEntity);
-      } catch(error) {
+      } catch (error) {
         this.handleError(error);
         this.dialogRef.close();
       }
@@ -41,8 +46,13 @@ export class EntityDialogComponent<EntityModel, CreateEntityModel = EntityModel,
   public async onSubmitAdd(): Promise<void> {
     if (this.entityForm.isValid()) {
       try {
+        if (!this.dataService.add) {
+          console.warn('[EntityDialog] Cannot add entity without DataService implementation');
+          return;
+        }
+
         const entity = this.entityForm.getEntity() as CreateEntityModel;
-        const addedEntity = await this.dataService.add?.(entity).toPromise();
+        const addedEntity = await this.dataService.add(entity).toPromise();
         this.dialogRef.close(addedEntity);
       } catch (error) {
         this.handleError(error);

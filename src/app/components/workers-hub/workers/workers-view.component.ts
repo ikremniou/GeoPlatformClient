@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { WorkerService } from 'src/app/services/worker/worker.service';

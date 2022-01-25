@@ -1,0 +1,10 @@
+<div class="tabs-container">
+  <nav mat-tab-nav-bar mat-stretch-tabs>
+    <a *ngFor="let tab of tabs" mat-tab-link [active]="activeLink === tab.link" (click)="changeTab(tab.link)">
+        {{ tab.name }}
+    </a>
+  </nav>
+  <div class="tab-router-outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>

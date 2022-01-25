@@ -2,21 +2,21 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EntityForm } from 'src/app/misc/entity-form';
 import { EntityFormData } from 'src/app/misc/entity-form-data';
-import { UserModel } from 'src/app/models/user/user.model';
+import { User } from 'src/app/models/user/user.model';
 
 @Component({
   selector: 'app-users-form',
   templateUrl: './users-form.component.html',
   styleUrls: ['./users-form.component.sass'],
 })
-export class UsersFormComponent implements OnInit, EntityForm<UserModel> {
+export class UsersFormComponent implements OnInit, EntityForm<User> {
   @Input('formData')
-  public formData!: EntityFormData<UserModel>;
+  public formData!: EntityFormData<User>;
   public userForm!: FormGroup;
 
   constructor() {}
 
-  public getEntity(): UserModel {
+  public getEntity(): User {
     return { id: this.formData.model?.id, ...this.userForm.value };
   }
 
