@@ -4,7 +4,7 @@ import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { ActionKeys, Claim, subjectResolver } from 'src/app/models/claim.model';
 import { ClaimService } from 'src/app/services/claim/claim.service';
 import { HeaderService } from 'src/app/services/header/header.service';
-import { claimsMessages } from '../locale';
+import { claimsMessages } from './locale';
 
 @Component({
   selector: 'app-claims',

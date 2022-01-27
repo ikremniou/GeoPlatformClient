@@ -38,6 +38,7 @@ import { WorkerCategoriesComponent } from './components/workers-hub/categories/w
 import { WorkerPositionsComponent } from './components/workers-hub/positions/worker-positions.component';
 import { WorkerCategoryFormComponent } from './components/workers-hub/categories/category-form/worker-category-form.component';
 import { WorkerPositionFormComponent } from './components/workers-hub/positions/position-form/worker-position-form.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { WorkerPositionFormComponent } from './components/workers-hub/positions/
     FlexLayoutModule,
     GraphQLModule,
     PlatformAbilityModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [
     {

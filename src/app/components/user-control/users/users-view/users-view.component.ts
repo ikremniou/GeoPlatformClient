@@ -1,12 +1,12 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { localeMessages } from 'src/app/local-locale';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { DialogData } from 'src/app/misc/entity-dialog-data';
 import { User } from 'src/app/models/user/user.model';
 import { HeaderService } from 'src/app/services/header/header.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { userMessages } from '../locale/ru/user-messages.ru';
 
 @Component({
   selector: 'app-users-view',
@@ -24,7 +24,7 @@ export class UsersViewComponent implements OnInit, DataTableConsumer<User> {
     private readonly _dialog: MatDialog,
     private readonly _headerService: HeaderService,
   ) {
-    this._headerService.changedHeader(localeMessages.headers.users);
+    this._headerService.changedHeader(userMessages.usersHeader);
   }
 
   public ngOnInit(): void {}
@@ -36,7 +36,7 @@ export class UsersViewComponent implements OnInit, DataTableConsumer<User> {
   public async edit(entityModel: User): Promise<User> {
     return new Promise<User>((resolve) => {
       const dialogData: DialogData<User> = {
-        title: localeMessages.editUser,
+        title: userMessages.editUser,
         form: {
           model: entityModel,
           type: { isEdit: true },

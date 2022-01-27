@@ -2,13 +2,114 @@
   <mat-form-field appearance="fill">
     <mat-label>Фамилия</mat-label>
     <input matInput name="lastName" formControlName="lastName" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('required', 'lastName')">Обязательно введите фамилию</mat-error>
+    <mat-error *ngIf="workerForm.hasError('maxlength', 'lastName')">
+      Максимальная длина - {{ maxLastNameLength }} символов
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Имя</mat-label>
     <input matInput name="firstName" formControlName="firstName" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('required', 'firstName')">Обязательно введите имя</mat-error>
+    <mat-error *ngIf="workerForm.hasError('maxlength', 'firstName')">
+      Максимальная длина - {{ maxFirstNameLength }} символов
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Отчество</mat-label>
     <input matInput name="middleName" formControlName="middleName" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('required', 'middleName')">Обязательно введите отчество</mat-error>
+    <mat-error *ngIf="workerForm.hasError('maxlength', 'middleName')">
+      Максимальная длина - {{ maxMiddleNameLength }} символов
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Дата рождения</mat-label>
+    <input
+      matInput
+      [min]="minBirthday"
+      [max]="maxBirthday"
+      formControlName="birthday"
+      [matDatepicker]="birthdayPicker" />
+    <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
+    <mat-datepicker #birthdayPicker></mat-datepicker>
+    <mat-error *ngIf="workerForm.hasError('required', 'birthday')">Выберите дату в формате: дд.мм.гггг</mat-error>
+    <mat-error
+      *ngIf="
+        workerForm.hasError('matDatepickerMin', 'birthday') || workerForm.hasError('matDatepickerMax', 'birthday')
+      ">
+      Укажите правильный диапазон
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Мобильный телефон</mat-label>
+    <input
+      matInput
+      name="mobilePhone"
+      type="tel"
+      formControlName="mobilePhone"
+      [prefix]="localMobilePrefix"
+      [mask]="localMobileMask"
+      [showMaskTyped]="true"
+      [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('mask', 'mobilePhone')">Неправильный формат номера</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Домашний телефон</mat-label>
+    <input matInput name="homePhone" type="tel" formControlName="homePhone" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('maxlength', 'homePhone')">
+      Максимальный размер поля - {{ maxHomePhoneLength }} символов
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Дата приёма на работу</mat-label>
+    <input
+      matInput
+      [min]="minHiredDate"
+      [max]="currentDate"
+      formControlName="hiredDate"
+      [matDatepicker]="hiredDatePicker" />
+    <mat-datepicker-toggle matSuffix [for]="hiredDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #hiredDatePicker></mat-datepicker>
+    <mat-error *ngIf="workerForm.hasError('required', 'hiredDate')">Выберите дату в формате: дд.мм.гггг</mat-error>
+    <mat-error
+      *ngIf="
+        workerForm.hasError('matDatepickerMin', 'hiredDate') || workerForm.hasError('matDatepickerMax', 'hiredDate')
+      ">
+      Укажите правильный диапазон
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="formData.type.isEdit" appearance="fill">
+    <mat-label>Дата увольнения</mat-label>
+    <input
+      matInput
+      [min]="minHiredDate"
+      [max]="currentDate"
+      formControlName="firedDate"
+      [matDatepicker]="firedDatePicker" />
+    <mat-datepicker-toggle matSuffix [for]="firedDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #firedDatePicker></mat-datepicker>
+    <mat-error *ngIf="workerForm.hasError('required', 'firedDate')">Выберите дату в формате: дд.мм.гггг</mat-error>
+    <mat-error
+      *ngIf="
+        workerForm.hasError('matDatepickerMin', 'firedDate') || workerForm.hasError('matDatepickerMax', 'firedDate')
+      ">
+      Укажите правильный диапазон
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Норма времени</mat-label>
+    <input matInput name="homePhone" type="number" formControlName="workNorm" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('required', 'lastName')">Обязательно введите норму времени</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Повышающий коэффициент</mat-label>
+    <input matInput name="homePhone" type="number" formControlName="boostFactor" [readonly]="formData.type.isView" />
   </mat-form-field>
 </form>

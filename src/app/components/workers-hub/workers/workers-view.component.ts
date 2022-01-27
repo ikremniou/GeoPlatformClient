@@ -2,11 +2,11 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { WorkerService } from 'src/app/services/worker/worker.service';
-import { Worker } from 'src/app/models/worker.model';
+import { Worker } from 'src/app/models/worker/worker.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogData } from 'src/app/misc/entity-dialog-data';
-import { localeMessages } from 'src/app/local-locale';
 import { HeaderService } from 'src/app/services/header/header.service';
+import { workerViewMessages } from './locale/ru/worker-view-messages.ru';
 
 @Component({
   selector: 'app-workers-view',
@@ -17,7 +17,20 @@ export class WorkersViewComponent implements DataTableConsumer<Worker> {
   @ViewChild('workerForm')
   public workerFormTemplate!: TemplateRef<any>;
   public entityClass = Worker;
-  public displayColumns = ['id', 'lastName', 'firstName', 'middleName'];
+  public displayColumns = [
+    'id',
+    'lastName',
+    'firstName',
+    'middleName',
+    'birthday',
+    'mobilePhone',
+    'homePhone',
+    'hiredDate',
+    'workNorm',
+    'boostFactor',
+    'position',
+    'category'
+  ];
   public tableOptions: DataTableOptions = {
     actions: {
       add: true,
@@ -32,26 +45,26 @@ export class WorkersViewComponent implements DataTableConsumer<Worker> {
     private readonly _matDialog: MatDialog,
     private readonly _headerService: HeaderService,
   ) {
-    this._headerService.changedHeader(localeMessages.headers.workers);
+    this._headerService.changedHeader(workerViewMessages.workersHeader);
   }
   public getAll(): Promise<Worker[]> {
     return this.workerService.getAll().toPromise();
   }
 
   public async view(entityModel: Worker): Promise<void> {
-      const dialogData: DialogData<Worker> = {
-        title: localeMessages.viewWorker,
-        form: {
-          type: { isView: true },
-          model: entityModel,
-        },
-      };
-      await this.openDialog(dialogData);
+    const dialogData: DialogData<Worker> = {
+      title: workerViewMessages.viewWorker,
+      form: {
+        type: { isView: true },
+        model: entityModel,
+      },
+    };
+    await this.openDialog(dialogData);
   }
 
   public edit(entityModel: Worker): Promise<Worker> {
     const dialogData: DialogData<Worker> = {
-      title: localeMessages.editWorker,
+      title: workerViewMessages.editWorker,
       form: {
         type: { isEdit: true },
         model: entityModel,
@@ -62,7 +75,7 @@ export class WorkersViewComponent implements DataTableConsumer<Worker> {
 
   public add(): Promise<Worker> {
     const dialogData: DialogData<Worker> = {
-      title: localeMessages.addWorker,
+      title: workerViewMessages.addWorker,
       form: {
         type: { isAdd: true },
       },

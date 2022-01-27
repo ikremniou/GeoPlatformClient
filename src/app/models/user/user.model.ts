@@ -1,25 +1,25 @@
 import { TableField } from '../../misc/data-table/field-decorator';
-import { modelLocaleStrings } from '../../local-locale';
 import { TableEntity } from '../../misc/data-table/entity-decorator';
+import { userMessages } from 'src/app/components/user-control/users/locale/ru/user-messages.ru';
 
 type UserStatus = 'active' | 'blocked';
 
 function statusView(status: UserStatus): string {
     if (status === 'active') {
-        return modelLocaleStrings.userModel.statusTypes.active;
+        return userMessages.statusTypes.active;
     } else {
-        return modelLocaleStrings.userModel.statusTypes.blocked;
+        return userMessages.statusTypes.blocked;
     }
 }
 
-@TableEntity({ displayName: modelLocaleStrings.userModel._.name })
+@TableEntity({ displayName: userMessages.modelName })
 export class User {
-  @TableField(modelLocaleStrings.userModel.id)
+  @TableField(userMessages.model.id)
   public id!: number;
-  @TableField(modelLocaleStrings.userModel.username)
+  @TableField(userMessages.model.username)
   public username!: string;
-  @TableField(modelLocaleStrings.userModel.email)
+  @TableField(userMessages.model.email)
   public email!: string;
-  @TableField(modelLocaleStrings.userModel.status, statusView)
+  @TableField(userMessages.model.status, statusView)
   public status!: UserStatus;
 }

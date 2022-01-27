@@ -20,7 +20,14 @@
       <ng-container *ngFor="let descriptor of tableDescription" [matColumnDef]="descriptor.name">
         <th mat-header-cell *matHeaderCellDef>{{ descriptor.displayName }}</th>
         <td mat-cell *matCellDef="let dataEntry">
-          {{ descriptor.view ? descriptor.view(dataEntry[descriptor.name]) : dataEntry[descriptor.name] }}
+          <ng-container *ngIf="!customTemplates.has(descriptor.name)">
+            {{ descriptor.view ? descriptor.view(dataEntry[descriptor.name]) : dataEntry[descriptor.name] }}
+          </ng-container>
+          <ng-container *ngIf="customTemplates.has(descriptor.name)">
+            <ng-container
+              *ngTemplateOutlet="customTemplates.get(descriptor.name) || null; context: { dataEntry: this.dataEntry }">
+            </ng-container>
+          </ng-container>
         </td>
       </ng-container>
 

@@ -1,23 +1,26 @@
-<app-data-table [source]="this" [entity]="entityClass" [columns]="displayColumns" [options]="tableOptions">
-  <ng-container matColumnDef="claims">
-    <th mat-header-cell *matHeaderCellDef>Права</th>
-    <td class='table-chip-holder' mat-cell *matCellDef="let dataEntry">
-      <ng-container *ngIf="isAdminEntry(dataEntry)">
-        <mat-chip-list>
-          <mat-chip class="access-chip"> Полные права администратора </mat-chip>
-        </mat-chip-list>
-      </ng-container>
-      <ng-container *ngIf="!isAdminEntry(dataEntry)">
-        <mat-chip-list>
-          <mat-chip *ngIf="!dataEntry.claims || dataEntry.claims.length === 0"> Права отсутствуют </mat-chip>
-          <mat-chip class="access-chip" *ngFor="let claim of dataEntry.claims">
-            {{ claimToChip(claim) }}
-          </mat-chip>
-        </mat-chip-list>
-      </ng-container>
-    </td>
-  </ng-container>
+<app-data-table
+  [source]="this"
+  [entity]="entityClass"
+  [columns]="displayColumns"
+  [options]="tableOptions"
+  [templates]="[['claims', accessChipTemplate]]">
 </app-data-table>
+
+<ng-template #accessChipTemplate let-dataEntry="dataEntry">
+  <ng-container *ngIf="isAdminEntry(dataEntry)">
+    <mat-chip-list>
+      <mat-chip class="access-chip"> Полные права администратора </mat-chip>
+    </mat-chip-list>
+  </ng-container>
+  <ng-container *ngIf="!isAdminEntry(dataEntry)">
+    <mat-chip-list>
+      <mat-chip *ngIf="!dataEntry.claims || dataEntry.claims.length === 0"> Права отсутствуют </mat-chip>
+      <mat-chip class="access-chip" *ngFor="let claim of dataEntry.claims">
+        {{ claimToChip(claim) }}
+      </mat-chip>
+    </mat-chip-list>
+  </ng-container>
+</ng-template>
 
 <ng-template #rolesForm let-dialogRef="dialogRef" let-data>
   <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data" [data-service]="roleService">

@@ -5,10 +5,10 @@ import { Activity } from '../../models/activity.model';
 import { Invite } from '../../models/invite/invitation.model';
 import { MonthlyTimeReview } from '../../models/monthly-time-review.model';
 import { Project } from '../../models/project.model';
-import { Role } from '../../models/role.model';
+import { Role } from '../../models/role/role.model';
 import { TimeReport } from '../../models/time-report.model';
 import { User } from '../../models/user/user.model';
-import { Worker } from '../../models/worker.model';
+import { Worker } from '../../models/worker/worker.model';
 
 export const AbilitySubjects = {
   User: User.name,

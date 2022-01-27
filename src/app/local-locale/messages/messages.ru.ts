@@ -1,24 +1,11 @@
 export const localeMessages = {
   unknownError: 'Произошла неизвестная ошибка. Обратитесь к администратору',
-  userEditedSuccessfully: 'Данные пользователя успешно изменены',
   noDataEntriesInTable: 'Данные не найдены',
-  editUser: 'Редактировать пользователя',
-  addWorker: 'Добавить рабочего',
-  editWorker: 'Редактировать рабочего',
-  viewWorker: 'Просмотр рабочего',
-  addInvitation: 'Добавить приглашение',
-  userRegisteredSuccess: 'Регистрация пользователя произошла успешно. Войдите в систему используя свой логин и пароль',
-  userRegisterFailed: 'Не удалось зарегистрировать пользователя. Сервер вернул ошибку',
   pleaseSignInAgainToUpdateToken: 'Пожалуйста, авторизуйтесь заново чтобы восстановить доступ к системе',
   error: 'Ошибка',
   headers: {
-    invitations: 'Приглашения',
-    homePage: 'Главное меню',
-    users: 'Пользователи',
-    workers: 'Сотрудники',
-    register: 'Регистрация',
+    mainMenu: 'Главное меню',
     login: 'Авторизация',
-    mainMenu: 'Главное меню'
   },
   navigation: {
     users: 'Пользователи',

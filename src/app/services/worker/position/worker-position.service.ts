@@ -61,15 +61,15 @@ export class WorkerPositionService extends BaseQLService implements DataService<
     return this.baseGetAll(WorkerPosition, GetWorkerPositions, { filter, skip, take });
   }
 
-  public add?(position: WorkerPosition): Observable<WorkerPosition> {
+  public add(position: WorkerPosition): Observable<WorkerPosition> {
     return this.baseAdd(WorkerPosition, AddWorkerPosition, { position });
   }
 
-  public patch?(position: WorkerPosition): Observable<WorkerPosition> {
+  public patch(position: WorkerPosition): Observable<WorkerPosition> {
     return this.basePatch(WorkerPosition, PatchWorkerPosition, { position });
   }
 
-  public delete?(position: WorkerPosition): Observable<WorkerPosition> {
+  public delete(position: WorkerPosition): Observable<WorkerPosition> {
     return this.baseDelete(WorkerPosition, DeleteWorkerPosition, { positionId: position.id });
   }
 }

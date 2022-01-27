@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { DataService } from 'src/app/misc/service/data-service';
-import { Worker } from 'src/app/models/worker.model';
+import { Worker } from 'src/app/models/worker/worker.model';
 import { BaseQLService } from '../apollo/base-ql.service';
 
 const GetWorkers = gql`

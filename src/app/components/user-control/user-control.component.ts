@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TabbedNavEntry } from '../generic/tabbed-nav/tabbed-nav-entry';
-import { userControlMessages } from './locale/ru/messages.ru';
+import { userControlMessages } from './locale/ru/user-control-messages.ru';
 
 @Component({
   selector: 'app-user-control',

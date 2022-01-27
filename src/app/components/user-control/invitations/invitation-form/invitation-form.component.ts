@@ -4,7 +4,7 @@ import { EntityForm } from 'src/app/misc/entity-form';
 import { EntityFormData } from 'src/app/misc/entity-form-data';
 import { Invite } from 'src/app/models/invite/invitation.model';
 import { WorkerService } from 'src/app/services/worker/worker.service';
-import { Worker } from 'src/app/models/worker.model';
+import { Worker } from 'src/app/models/worker/worker.model';
 import { CreateInvitation } from 'src/app/models/invite/create-invitation.model';
 
 @Component({

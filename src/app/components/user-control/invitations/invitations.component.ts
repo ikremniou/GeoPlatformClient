@@ -1,14 +1,14 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { localeMessages } from 'src/app/local-locale';
 import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { DialogData } from 'src/app/misc/entity-dialog-data';
 import { Invite } from 'src/app/models/invite/invitation.model';
 import { HeaderService } from 'src/app/services/header/header.service';
 import { InvitationService } from 'src/app/services/invitation/invitation.service';
-import { Worker } from 'src/app/models/worker.model';
+import { Worker } from 'src/app/models/worker/worker.model';
 import { Router } from '@angular/router';
+import { invitationMessages } from './locale/ru/invitation-messages.ru';
 
 @Component({
   selector: 'app-invitations',
@@ -31,7 +31,7 @@ export class InvitationsComponent implements DataTableConsumer<Invite> {
     private readonly _headerService: HeaderService,
     public readonly invitationService: InvitationService,
   ) {
-    this._headerService.changedHeader(localeMessages.headers.invitations);
+    this._headerService.changedHeader(invitationMessages.invitationsHeader);
   }
 
   public getAll(): Promise<Invite[]> {
@@ -40,7 +40,7 @@ export class InvitationsComponent implements DataTableConsumer<Invite> {
 
   public add(): Promise<Invite> {
     const dialogData: DialogData<Invite> = {
-      title: localeMessages.addInvitation,
+      title: invitationMessages.addInvitation,
       form: {
         type: { isAdd: true },
       },
@@ -54,7 +54,7 @@ export class InvitationsComponent implements DataTableConsumer<Invite> {
 
   public openWorker(worker: Worker): void {
     const dialogData: DialogData<Worker> = {
-      title: localeMessages.viewWorker,
+      title: invitationMessages.viewInvitation,
       form: {
         type: { isView: true },
         model: worker,

@@ -5,10 +5,10 @@ import { DataTableConsumer } from 'src/app/misc/data-table/data-table-consumer';
 import { DataTableOptions } from 'src/app/misc/data-table/data-table-options';
 import { DialogData } from 'src/app/misc/entity-dialog-data';
 import { ActionKeys, actionResolver, Claim, subjectResolver } from 'src/app/models/claim.model';
-import { Role } from 'src/app/models/role.model';
+import { Role } from 'src/app/models/role/role.model';
 import { HeaderService } from 'src/app/services/header/header.service';
 import { RoleService } from 'src/app/services/role/role.service';
-import { claimsMessages, rolesMessages } from '../locale';
+import { rolesMessages } from './locale';
 
 @Component({
   selector: 'app-roles',
@@ -45,7 +45,7 @@ export class RolesComponent implements DataTableConsumer<Role> {
     const subject = subjectResolver(claim.action as ActionKeys, claim.subject!);
     const action = actionResolver(claim.action as ActionKeys);
 
-    return [claimsMessages.can, action, subject].join(' | ');
+    return [rolesMessages.can, action, subject].join(' | ');
   }
 
   public add(): Promise<Role> {

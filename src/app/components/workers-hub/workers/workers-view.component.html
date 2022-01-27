@@ -1,5 +1,21 @@
-<app-data-table [source]="this" [entity]="entityClass" [columns]="displayColumns" [options]="tableOptions">
+<app-data-table
+  [source]="this"
+  [entity]="entityClass"
+  [columns]="displayColumns"
+  [options]="tableOptions"
+  [templates]="[
+    ['category', categoryTemplate],
+    ['position', positionTemplate]
+  ]">
 </app-data-table>
+
+<ng-template #categoryTemplate let-dataEntry="dataEntry">
+  {{ dataEntry.category.name }}
+</ng-template>
+
+<ng-template #positionTemplate let-dataEntry="dataEntry">
+  {{ dataEntry.position.name }}
+</ng-template>
 
 <ng-template #workerForm let-dialogRef="dialogRef" let-data>
   <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data" [data-service]="workerService">

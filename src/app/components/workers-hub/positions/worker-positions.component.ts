@@ -23,6 +23,9 @@ export class WorkerPositionsComponent implements DataTableConsumer<WorkerPositio
   public tableOptions: DataTableOptions = {
     actions: {
       add: true,
+      delete: true,
+      edit: true,
+      view: true,
     },
   };
 
@@ -49,5 +52,37 @@ export class WorkerPositionsComponent implements DataTableConsumer<WorkerPositio
     };
 
     return this._platformDialog.open<WorkerPosition>(this.positionForm, dialogData);
+  }
+
+  public async view(position: WorkerPosition): Promise<void> {
+    const dialogData: DialogData<WorkerPosition> = {
+      form: {
+        type: {
+          isView: true,
+        },
+        model: position,
+      },
+      title: workerPositionsMessages.viewPosition,
+    };
+
+    await this._platformDialog.open<WorkerPosition>(this.positionForm, dialogData);
+  }
+
+  public edit(position: WorkerPosition): Promise<WorkerPosition> {
+    const dialogData: DialogData<WorkerPosition> = {
+      form: {
+        type: {
+          isEdit: true,
+        },
+        model: position,
+      },
+      title: workerPositionsMessages.editPosition,
+    };
+
+    return this._platformDialog.open<WorkerPosition>(this.positionForm, dialogData);
+  }
+
+  public async delete(positions: WorkerPosition): Promise<void> {
+    await this.positionService.delete(positions).toPromise();
   }
 }

@@ -27,6 +27,7 @@
     "apollo-angular": "^2.6.0",
     "class-transformer": "^0.4.0",
     "graphql": "^15.0.0",
+    "ngx-mask": "^13.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "validator": "^13.7.0",

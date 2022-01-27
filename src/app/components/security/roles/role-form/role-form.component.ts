@@ -5,7 +5,7 @@ import { Constants } from 'src/app/app.constants';
 import { EntityForm } from 'src/app/misc/entity-form';
 import { EntityFormData } from 'src/app/misc/entity-form-data';
 import { ActionKeys, actionResolver, Claim, subjectResolver } from 'src/app/models/claim.model';
-import { CreateRoleModel, Role } from 'src/app/models/role.model';
+import { CreateRoleModel, Role } from 'src/app/models/role/role.model';
 import { ClaimService } from 'src/app/services/claim/claim.service';
 
 @Component({

@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { HeaderService } from 'src/app/services/header/header.service';
 import { NotificationService } from 'src/app/services/ui/notification/notification.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { registerMessages } from './locale';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +31,7 @@ export class RegisterComponent {
     private readonly _userService: UserService,
     private readonly _notificationService: NotificationService,
   ) {
-    this._headerService.changedHeader(localeMessages.headers.register);
+    this._headerService.changedHeader(registerMessages.registerHeader);
     this.registerForm = new FormGroup({
       username: new FormControl(undefined, [
         Validators.required,
@@ -54,10 +55,6 @@ export class RegisterComponent {
   }
 
   public async submitRegister() {
-    // if (!this.registerForm.valid) {
-    //   return;
-    // }
-
     this.lastServerErrors = undefined;
     const createUserModel: CreateUserModel = {
       username: this.registerForm.value.username,
@@ -68,14 +65,14 @@ export class RegisterComponent {
 
     try {
       await this._userService.add(createUserModel).toPromise();
-      this._notificationService.notify(localeMessages.userRegisteredSuccess);
+      this._notificationService.notify(registerMessages.userRegisteredSuccess);
       this._authService.logout();
       this._router.navigate(['login'], {
         queryParams: { login: createUserModel.username, password: createUserModel.password },
       });
     } catch (error) {
       if (error instanceof ServerError) {
-        this._notificationService.notifyError(localeMessages.userRegisterFailed);
+        this._notificationService.notifyError(registerMessages.userRegisterFailed);
         this.lastServerErrors = error.message.split(',');
       }
     }

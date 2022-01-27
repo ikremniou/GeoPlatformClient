@@ -5,6 +5,7 @@ import {
   Input,
   OnInit,
   QueryList,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { localeMessages } from 'src/app/local-locale';
@@ -16,6 +17,11 @@ import { MatColumnDef, MatHeaderRowDef, MatRowDef, MatTable } from '@angular/mat
 interface Constructable<T> {
   name: string;
   new (): T;
+}
+
+interface SomeInt {
+  fieldName: string,
+  template: TemplateRef<any>
 }
 
 @Component({
@@ -40,6 +46,9 @@ export class DataTableComponent<EntityType> implements OnInit, AfterContentInit 
   public consumer!: DataTableConsumer<EntityType>;
   @Input('options')
   public dataTableOptions?: DataTableOptions;
+  @Input('templates')
+  public templates?: [string, TemplateRef<any>][];
+  public customTemplates!: Map<string, TemplateRef<any>>;
 
   public tableDescription?: DataTableField[];
   public entityMetadata?: EntityMetadata;
@@ -53,6 +62,7 @@ export class DataTableComponent<EntityType> implements OnInit, AfterContentInit 
   }
 
   public ngOnInit(): void {
+    this.customTemplates = new Map(this.templates);
     this.handleTableOptions(this.dataTableOptions);
     this.tableDescription = dataTableMetadataStore.getFields(this.entityClass.name);
     this.entityMetadata = dataTableMetadataStore.getEntityMetadata(this.entityClass.name);

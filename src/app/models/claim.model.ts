@@ -1,4 +1,4 @@
-import { claimsMessages } from '../components/security/locale/ru/claims-messages.ru';
+import { claimsMessages } from '../components/security/claims/locale/ru/claims-messages.ru';
 import { TableField } from '../misc/data-table/field-decorator';
 import { AbilityActions, AbilitySubjects } from '../services/ability/platform-ability.service';
 
@@ -52,6 +52,7 @@ export class Claim {
   public id!: number;
   @TableField(claimsMessages.claim.action, actionResolver)
   public action!: string;
+  @TableField(claimsMessages.claim.subject)
   public subject!: string;
   public condition?: string;
 }
