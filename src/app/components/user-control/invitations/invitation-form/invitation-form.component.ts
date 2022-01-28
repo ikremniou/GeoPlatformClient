@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit, Optional, Self } from '@angular/core';
+import { FormControl, FormGroup, NgControl, Validators } from '@angular/forms';
 import { EntityForm } from 'src/app/misc/entity-form';
 import { EntityFormData } from 'src/app/misc/entity-form-data';
 import { Invite } from 'src/app/models/invite/invitation.model';
@@ -20,8 +20,12 @@ export class InvitationFormComponent implements OnInit, EntityForm<Invite, Creat
 
   constructor(public readonly dataService: WorkerService) {
     this.invitationForm = new FormGroup({
-      worker: new FormControl(),
+      worker: new FormControl(undefined, [Validators.required]),
     });
+  }
+
+  get workerSelectControl(): FormControl {
+    return this.invitationForm.get('worker') as FormControl;
   }
 
   public isValid(): boolean {

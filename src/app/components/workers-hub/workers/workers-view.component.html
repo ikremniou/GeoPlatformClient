@@ -5,9 +5,29 @@
   [options]="tableOptions"
   [templates]="[
     ['category', categoryTemplate],
-    ['position', positionTemplate]
+    ['position', positionTemplate],
+    ['mobilePhone', mobilePhoneTemplate],
+    ['homePhone', homePhoneTemplate],
+    ['birthday', birthdayTemplate],
+    ['hiredDate', hiredDateTemplate]
   ]">
 </app-data-table>
+
+<ng-template #mobilePhoneTemplate let-dataEntry="dataEntry">
+  <a class="phone-no-wrap" [href]="'tel:' + dataEntry.mobilePhone">{{ dataEntry.mobilePhone }}</a>
+</ng-template>
+
+<ng-template #homePhoneTemplate let-dataEntry="dataEntry">
+  <a class="phone-no-wrap" [href]="'tel:' + dataEntry.homePhone">{{ dataEntry.homePhone }}</a>
+</ng-template>
+
+<ng-template #birthdayTemplate let-dataEntry="dataEntry">
+  <app-button-date-view [date]="dataEntry.birthday"></app-button-date-view>
+</ng-template>
+
+<ng-template #hiredDateTemplate let-dataEntry="dataEntry">
+  <app-button-date-view [date]="dataEntry.hiredDate"></app-button-date-view>
+</ng-template>
 
 <ng-template #categoryTemplate let-dataEntry="dataEntry">
   {{ dataEntry.category.name }}

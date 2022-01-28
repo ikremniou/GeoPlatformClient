@@ -1,11 +1,11 @@
 <form [formGroup]="invitationForm">
   <app-entity-select
-    #auto
+    label="Выберите рабочего"
     formControlName="worker"
     [dataService]="dataService"
     [displayWith]="displayWorker"
     [entityParts]="workerFilterParts"
-    label="Выберите рабочего">
-    <ng-template let-entity> {{ entity.lastName }} {{ entity.firstName }} {{ entity.middleName }} </ng-template>
+    [errors]="[{ error: 'required', template: requiredWorker }]">
   </app-entity-select>
+  <ng-template #requiredWorker>Обязательно выберите рабочего</ng-template>
 </form>

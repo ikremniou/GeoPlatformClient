@@ -1,7 +1,7 @@
-import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { debounce, debounceTime, filter, map, tap, throttle } from 'rxjs/operators';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { AbstractControl, ControlContainer, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { debounceTime, filter, tap } from 'rxjs/operators';
 import { DataService } from 'src/app/misc/service/data-service';
 import {
   FilterAggregatorService,
@@ -22,34 +22,47 @@ import {
   ],
 })
 export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAccessor {
-  public isLoading = false;
-  @ContentChild(TemplateRef) templateRef!: TemplateRef<any>;
   @Input('dataService')
   public dataService!: DataService<EntityType>;
   @Input('displayWith')
   public displayWith!: (value: EntityType) => string;
-  @Input('label')
-  public label?: string;
+  @Input('entityParts')
+  public entityParts: string[] = [];
   @Input('filterStrategy')
   public filterStrategy: FilterStrategy = 'sequence';
   @Input('filterType')
   public filterType: FilterType = 'contains';
-  @Input('entityParts')
-  public entityParts: string[] = [];
+  @Input('entityTemplate')
+  public entityTemplate?: TemplateRef<any>;
+  @Input('formControlName')
+  public formControlName!: string;
+  @Input('errors')
+  public errors?: [{ error: string; template: TemplateRef<any> }];
+  @Input('label')
+  public inputLabel!: string;
+  @Input('readonly')
+  public readonly?: boolean;
+
+  public isLoading = false;
+  public noDataFound = false;
   public entitySelected?: (entityType: EntityType) => void;
-
   public entityControl: FormControl;
-  public entities: Array<EntityType> = [];
+  public filteredEntities: Array<EntityType> = [];
+  public onTouchedCallback!: () => void;
+  public isTouched: boolean = false;
 
-  constructor(private readonly filterService: FilterAggregatorService) {
+  constructor(
+    private readonly _controlContainer: ControlContainer,
+    private readonly _filterService: FilterAggregatorService) {
     this.entityControl = new FormControl();
-    const cancelToken = new Subject<boolean>();
     this.entityControl.valueChanges
       .pipe(
         tap((input) => {
-          this.entities = [];
+          this.filteredEntities = [];
+          this.noDataFound = false;
           this.isLoading = true;
           if (input && typeof input !== 'string') {
+            this.markAsTouched();
             this.entitySelected?.(input);
           }
         }),
@@ -58,32 +71,54 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
       )
       .subscribe((filterInput) => {
         this.filterEntities(filterInput).subscribe((filteredEntities) => {
-          this.entities = filteredEntities;
+          if (filteredEntities?.length === 0) {
+            this.noDataFound = true;
+          }
+          this.filteredEntities = filteredEntities;
           this.isLoading = false;
         });
       });
   }
 
+  get outerControl(): FormControl {
+    return this._controlContainer.control?.get(this.formControlName) as FormControl;
+  }
+
+  public ngOnInit(): void {
+    this.entityControl.setValidators(this.outerControl.validator);
+  }
+
   public writeValue(obj: any): void {
     this.entityControl.setValue(obj);
   }
+
   public registerOnChange(fn: any): void {
     this.entitySelected = fn;
-    this.entityControl.registerOnChange(fn);
   }
-  public registerOnTouched(fn: any): void {}
 
-  public setDisabledState(disabled: boolean): void {}
+  public registerOnTouched(fn: any): void {
+    this.onTouchedCallback = fn;
+  }
 
-  public async ngOnInit(): Promise<void> {
-    // const entities = await this.dataService.getAll().toPromise();
-    // this.entities = entities;
+  public setDisabledState(disabled: boolean): void {
+    if (disabled) {
+      this.entityControl.disable();
+    } else {
+      this.entityControl.enable();
+    }
+  }
+
+  public markAsTouched(): void {
+    if (this.isTouched) {
+      this.onTouchedCallback();
+      this.isTouched = true;
+    }
   }
 
   private filterEntities(filterInput: string): Observable<EntityType[]> {
     if (filterInput) {
       const filterParts = filterInput.split(' ');
-      const filter = this.filterService.getFilter(this.filterStrategy, this.filterType, this.entityParts, filterParts);
+      const filter = this._filterService.getFilter(this.filterStrategy, this.filterType, this.entityParts, filterParts);
       return this.dataService.getAll(filter);
     }
     return this.dataService.getAll();

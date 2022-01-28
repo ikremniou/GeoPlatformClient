@@ -7,6 +7,7 @@
       Максимальная длина - {{ maxLastNameLength }} символов
     </mat-error>
   </mat-form-field>
+
   <mat-form-field appearance="fill">
     <mat-label>Имя</mat-label>
     <input matInput name="firstName" formControlName="firstName" [readonly]="formData.type.isView" />
@@ -15,6 +16,7 @@
       Максимальная длина - {{ maxFirstNameLength }} символов
     </mat-error>
   </mat-form-field>
+
   <mat-form-field appearance="fill">
     <mat-label>Отчество</mat-label>
     <input matInput name="middleName" formControlName="middleName" [readonly]="formData.type.isView" />
@@ -23,6 +25,30 @@
       Максимальная длина - {{ maxMiddleNameLength }} символов
     </mat-error>
   </mat-form-field>
+
+  <mat-form-field *ngIf="isOptionalVisible('mobilePhone')" appearance="fill">
+    <mat-label>Мобильный телефон</mat-label>
+    <input
+      matInput
+      name="mobilePhone"
+      type="tel"
+      formControlName="mobilePhone"
+      [prefix]="localMobilePrefix"
+      [mask]="localMobileMask"
+      [dropSpecialCharacters]="false"
+      [showMaskTyped]="true"
+      [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('mask', 'mobilePhone')">Неправильный формат номера</mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="isOptionalVisible('homePhone')" appearance="fill">
+    <mat-label>Домашний телефон</mat-label>
+    <input matInput name="homePhone" type="tel" formControlName="homePhone" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('maxlength', 'homePhone')">
+      Максимальный размер поля - {{ maxHomePhoneLength }} символов
+    </mat-error>
+  </mat-form-field>
+
   <mat-form-field appearance="fill">
     <mat-label>Дата рождения</mat-label>
     <input
@@ -30,6 +56,7 @@
       [min]="minBirthday"
       [max]="maxBirthday"
       formControlName="birthday"
+      [disabled]="formData.type.isView || false"
       [matDatepicker]="birthdayPicker" />
     <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
     <mat-datepicker #birthdayPicker></mat-datepicker>
@@ -43,34 +70,13 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Мобильный телефон</mat-label>
-    <input
-      matInput
-      name="mobilePhone"
-      type="tel"
-      formControlName="mobilePhone"
-      [prefix]="localMobilePrefix"
-      [mask]="localMobileMask"
-      [showMaskTyped]="true"
-      [readonly]="formData.type.isView" />
-    <mat-error *ngIf="workerForm.hasError('mask', 'mobilePhone')">Неправильный формат номера</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Домашний телефон</mat-label>
-    <input matInput name="homePhone" type="tel" formControlName="homePhone" [readonly]="formData.type.isView" />
-    <mat-error *ngIf="workerForm.hasError('maxlength', 'homePhone')">
-      Максимальный размер поля - {{ maxHomePhoneLength }} символов
-    </mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
     <mat-label>Дата приёма на работу</mat-label>
     <input
       matInput
       [min]="minHiredDate"
       [max]="currentDate"
       formControlName="hiredDate"
+      [disabled]="formData.type.isView || false"
       [matDatepicker]="hiredDatePicker" />
     <mat-datepicker-toggle matSuffix [for]="hiredDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #hiredDatePicker></mat-datepicker>
@@ -83,17 +89,20 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field *ngIf="formData.type.isEdit" appearance="fill">
+  <mat-form-field *ngIf="isOptionalVisible('firedDate') && formData.type.isEdit" appearance="fill">
     <mat-label>Дата увольнения</mat-label>
     <input
       matInput
       [min]="minHiredDate"
       [max]="currentDate"
       formControlName="firedDate"
+      [disabled]="formData.type.isView || false"
       [matDatepicker]="firedDatePicker" />
     <mat-datepicker-toggle matSuffix [for]="firedDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #firedDatePicker></mat-datepicker>
-    <mat-error *ngIf="workerForm.hasError('required', 'firedDate')">Выберите дату в формате: дд.мм.гггг</mat-error>
+    <mat-error *ngIf="workerForm.hasError('matDatepickerParse', 'firedDate')">
+      Введите дату в формате: дд.мм.гггг
+    </mat-error>
     <mat-error
       *ngIf="
         workerForm.hasError('matDatepickerMin', 'firedDate') || workerForm.hasError('matDatepickerMax', 'firedDate')
@@ -104,12 +113,37 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Норма времени</mat-label>
-    <input matInput name="homePhone" type="number" formControlName="workNorm" [readonly]="formData.type.isView" />
-    <mat-error *ngIf="workerForm.hasError('required', 'lastName')">Обязательно введите норму времени</mat-error>
+    <input matInput name="workNorm" type="number" formControlName="workNorm" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('required', 'workNorm')">Обязательно введите норму времени</mat-error>
+    <mat-error *ngIf="workerForm.hasError('min', 'workNorm')">Значение должно быть положительным</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Повышающий коэффициент</mat-label>
-    <input matInput name="homePhone" type="number" formControlName="boostFactor" [readonly]="formData.type.isView" />
+    <input matInput name="boostFactor" type="number" formControlName="boostFactor" [readonly]="formData.type.isView" />
+    <mat-error *ngIf="workerForm.hasError('required', 'boostFactor')">Обязательно введите норму времени</mat-error>
+    <mat-error *ngIf="workerForm.hasError('min', 'boostFactor')">Значение должно быть положительным</mat-error>
   </mat-form-field>
+
+  <app-entity-select
+    label="Выберите категорию"
+    formControlName="category"
+    [dataService]="categoryService"
+    [readonly]="formData.type.isView"
+    [displayWith]="positionCategoryDisplay"
+    [entityParts]="['name']"
+    [errors]="[{ error: 'required', template: requiredCategory }]">
+  </app-entity-select>
+  <ng-template #requiredCategory>Обязательно выберите категорию</ng-template>
+
+  <app-entity-select
+    label="Выберите должность"
+    formControlName="position"
+    [readonly]="formData.type.isView"
+    [dataService]="positionService"
+    [displayWith]="positionCategoryDisplay"
+    [entityParts]="['name']"
+    [errors]="[{ error: 'required', template: requiredPosition }]">
+  </app-entity-select>
+  <ng-template #requiredPosition>Обязательно выберите должность</ng-template>
 </form>

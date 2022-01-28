@@ -19,6 +19,6 @@
     <span matSuffix>руб.</span>
 
     <mat-error *ngIf="positionForm.hasError('required', 'baseSalary')">Обязательное поле</mat-error>
-    <mat-error *ngIf="positionForm.hasError('min', 'baseSalary')">Минимальное значение - 0</mat-error>
+    <mat-error *ngIf="positionForm.hasError('min', 'baseSalary')">Значение должно быть положительным</mat-error>
   </mat-form-field>
 </form>

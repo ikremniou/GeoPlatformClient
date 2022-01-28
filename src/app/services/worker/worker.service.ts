@@ -12,6 +12,21 @@ const GetWorkers = gql`
       firstName
       middleName
       lastName
+      birthday
+      mobilePhone
+      homePhone
+      hiredDate
+      firedDate
+      workNorm
+      boostFactor
+      position {
+        id
+        name
+      }
+      category {
+        id
+        name
+      }
     }
   }
 `;
@@ -23,6 +38,21 @@ const RemoveWorker = gql`
       firstName
       middleName
       lastName
+      birthday
+      mobilePhone
+      homePhone
+      hiredDate
+      firedDate
+      workNorm
+      boostFactor
+      position {
+        id
+        name
+      }
+      category {
+        id
+        name
+      }
     }
   }
 `;
@@ -34,6 +64,21 @@ const AddWorker = gql`
       firstName
       middleName
       lastName
+      birthday
+      mobilePhone
+      homePhone
+      hiredDate
+      firedDate
+      workNorm
+      boostFactor
+      position {
+        id
+        name
+      }
+      category {
+        id
+        name
+      }
     }
   }
 `;
@@ -45,6 +90,21 @@ const UpdateWorker = gql`
       firstName
       middleName
       lastName
+      birthday
+      mobilePhone
+      homePhone
+      hiredDate
+      firedDate
+      workNorm
+      boostFactor
+      position {
+        id
+        name
+      }
+      category {
+        id
+        name
+      }
     }
   }
 `;

@@ -2,7 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EntityForm } from 'src/app/misc/entity-form';
 import { EntityFormData } from 'src/app/misc/entity-form-data';
+import { WorkerCategory } from 'src/app/models/worker-category/worker-category.model';
+import { WorkerPosition } from 'src/app/models/worker-position/worker-position.model';
+import { CreateWorker } from 'src/app/models/worker/create-worker.model';
+import { UpdateWorker } from 'src/app/models/worker/update-worker.model';
 import { Worker } from 'src/app/models/worker/worker.model';
+import { WorkerCategoryService } from 'src/app/services/worker/category/worker-category.service';
+import { WorkerPositionService } from 'src/app/services/worker/position/worker-position.service';
 import { workerConstants } from '../../worker.constants';
 import { workerViewMessages } from '../locale/ru/worker-view-messages.ru';
 
@@ -11,7 +17,7 @@ import { workerViewMessages } from '../locale/ru/worker-view-messages.ru';
   templateUrl: './worker-form.component.html',
   styleUrls: ['./worker-form.component.sass'],
 })
-export class WorkersFormComponent implements OnInit, EntityForm<Worker> {
+export class WorkersFormComponent implements OnInit, EntityForm<Worker, CreateWorker> {
   public localMobilePrefix = workerViewMessages.mobilePrefix;
   public localMobileMask = workerViewMessages.mobileMask;
   public maxFirstNameLength = workerConstants.maxFirstNameLength;
@@ -40,18 +46,35 @@ export class WorkersFormComponent implements OnInit, EntityForm<Worker> {
 
   public workerForm!: FormGroup;
 
-  constructor() {}
+  constructor(
+    public readonly positionService: WorkerPositionService,
+    public readonly categoryService: WorkerCategoryService,
+  ) {}
 
   public isValid(): boolean {
     return this.workerForm.valid;
   }
 
-  public getEntity(): Worker {
-    return {
-      id: this.formData.model?.id,
-      ...this.workerForm.value,
-      mobilePhone: `${this.localMobilePrefix}${this.workerForm.value.mobilePhone}`,
-    };
+  public getEntity(): Worker | CreateWorker | UpdateWorker {
+    const entity: CreateWorker | UpdateWorker = {
+      birthday: this.workerForm.value.birthday,
+      boostFactor: this.workerForm.value.boostFactor,
+      firstName: this.workerForm.value.firstName,
+      hiredDate: this.workerForm.value.hiredDate,
+      lastName: this.workerForm.value.lastName,
+      middleName: this.workerForm.value.middleName,
+      workNorm: this.workerForm.value.workNorm,
+      workerCategoryId: this.workerForm.value.category.id,
+      workerPositionId: this.workerForm.value.position.id,
+      firedDate: this.workerForm.value.firedDate,
+      homePhone: this.workerForm.value.homePhone,
+      mobilePhone: this.workerForm.value.mobilePhone,
+    }
+
+    if (this.formData.type.isEdit) {
+      (entity as UpdateWorker).id = this.formData.model!.id;
+    }
+    return entity;
   }
 
   public ngOnInit(): void {
@@ -75,10 +98,28 @@ export class WorkersFormComponent implements OnInit, EntityForm<Worker> {
       firedDate: new FormControl(this.formData.model?.firedDate),
       workNorm: new FormControl(this.formData.model?.workNorm ?? workerConstants.defaultWorkNorm, [
         Validators.required,
+        Validators.min(0),
       ]),
       boostFactor: new FormControl(this.formData.model?.boostFactor ?? workerConstants.defaultBoostFactor, [
         Validators.required,
+        Validators.min(0),
       ]),
+      category: new FormControl(this.formData.model?.category, [Validators.required]),
+      position: new FormControl(this.formData.model?.position, [Validators.required]),
     });
+  }
+
+  public positionCategoryDisplay(categoryPosition: WorkerPosition | WorkerCategory): string {
+    if (categoryPosition) {
+      return categoryPosition.name;
+    }
+    return '';
+  }
+
+  public isOptionalVisible(name: keyof Worker): boolean {
+    if (this.formData.type.isView && !this.formData.model?.[name]) {
+      return false;
+    }
+    return true;
   }
 }

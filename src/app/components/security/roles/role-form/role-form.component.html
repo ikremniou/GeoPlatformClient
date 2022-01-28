@@ -6,7 +6,7 @@
   </mat-form-field>
   <h2 *ngIf="claims.length > 0" class="claims-can-subheader">Разрешено:</h2>
   <app-platform-shutter class="full-shutter" *ngIf="claimsLoading"></app-platform-shutter>
-  <div *ngIf="!claimsLoading" class="claims-holder" formArrayName="claims">
+  <div *ngIf="!claimsLoading" formArrayName="claims">
     <mat-error *ngIf="roleForm.controls['claims'].hasError('required') && !formData.type.isView">
       Выберите хотя бы одно правило
     </mat-error>

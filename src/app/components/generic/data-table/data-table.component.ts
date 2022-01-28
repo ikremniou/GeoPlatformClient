@@ -20,8 +20,8 @@ interface Constructable<T> {
 }
 
 interface SomeInt {
-  fieldName: string,
-  template: TemplateRef<any>
+  fieldName: string;
+  template: TemplateRef<any>;
 }
 
 @Component({
@@ -135,12 +135,18 @@ export class DataTableComponent<EntityType> implements OnInit, AfterContentInit 
   }
 
   private async getTableData(): Promise<void> {
-    const entities = await this.consumer.getAll();
-    this.isDataLoading = false;
-    this.dataSource = entities;
-    if (entities.length === 0) {
-      this.tableMessage = localeMessages.noDataEntriesInTable;
+    try {
+      const entities = await this.consumer.getAll();
+      this.dataSource = entities;
+      if (entities.length === 0) {
+        this.tableMessage = localeMessages.noDataEntriesInTable;
+      }
+    } catch (error) {
+      this.tableMessage = localeMessages.errorHappenedWhileDataLoading;
+      console.error(`[DataTableComponent] Failed to get data: ${error}`);
     }
+
+    this.isDataLoading = false;
   }
 
   private deleteFromTable(entityModel: EntityType): void {

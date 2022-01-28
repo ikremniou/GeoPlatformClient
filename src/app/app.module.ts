@@ -39,6 +39,7 @@ import { WorkerPositionsComponent } from './components/workers-hub/positions/wor
 import { WorkerCategoryFormComponent } from './components/workers-hub/categories/category-form/worker-category-form.component';
 import { WorkerPositionFormComponent } from './components/workers-hub/positions/position-form/worker-position-form.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { ButtonDateViewComponent } from './components/generic/button-date-view/button-date-view.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { NgxMaskModule } from 'ngx-mask';
     WorkerPositionsComponent,
     WorkerCategoryFormComponent,
     WorkerPositionFormComponent,
+    ButtonDateViewComponent,
   ],
   imports: [
     BrowserModule,
