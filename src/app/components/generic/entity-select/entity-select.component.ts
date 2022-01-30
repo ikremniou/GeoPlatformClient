@@ -1,5 +1,11 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { AbstractControl, ControlContainer, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlContainer,
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
 import { DataService } from 'src/app/misc/service/data-service';
@@ -27,7 +33,7 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
   @Input('displayWith')
   public displayWith!: (value: EntityType) => string;
   @Input('entityParts')
-  public entityParts: string[] = [];
+  public entityParts: (keyof EntityType)[] = [];
   @Input('filterStrategy')
   public filterStrategy: FilterStrategy = 'sequence';
   @Input('filterType')
@@ -53,7 +59,8 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
 
   constructor(
     private readonly _controlContainer: ControlContainer,
-    private readonly _filterService: FilterAggregatorService) {
+    private readonly _filterService: FilterAggregatorService,
+  ) {
     this.entityControl = new FormControl();
     this.entityControl.valueChanges
       .pipe(
@@ -66,7 +73,7 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
             this.entitySelected?.(input);
           }
         }),
-        filter((input) => typeof input === 'string' || input === null),
+        filter((input) => input),
         debounceTime(500),
       )
       .subscribe((filterInput) => {
@@ -115,10 +122,25 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
     }
   }
 
-  private filterEntities(filterInput: string): Observable<EntityType[]> {
+  private filterEntities(filterInput: string | EntityType): Observable<EntityType[]> {
     if (filterInput) {
-      const filterParts = filterInput.split(' ');
-      const filter = this._filterService.getFilter(this.filterStrategy, this.filterType, this.entityParts, filterParts);
+      let filterParts: string[] = [];
+      if (typeof filterInput === 'string') {
+        if (this.entityParts.length > 0) {
+          filterParts = filterInput.split(' ');
+        }
+      } else {
+        this.entityParts.forEach((entityPart) => {
+          filterParts.push(String(filterInput[entityPart]));
+        });
+      }
+
+      const filter = this._filterService.getFilter(
+        this.filterStrategy,
+        this.filterType,
+        this.entityParts as string[],
+        filterParts,
+      );
       return this.dataService.getAll(filter);
     }
     return this.dataService.getAll();

@@ -3,7 +3,7 @@ import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { DataService } from 'src/app/misc/service/data-service';
 import { WorkerCategory } from 'src/app/models/worker-category/worker-category.model';
-import { BaseQLService } from '../../apollo/base-ql.service';
+import { BaseQlService } from '../../apollo/base-ql.service';
 
 const GetWorkerCategories = gql`
   query GetAll($filter: String, $skip: Int, $take: Int) {
@@ -44,7 +44,7 @@ const UpdateWorkerCategory = gql`
 @Injectable({
   providedIn: 'root',
 })
-export class WorkerCategoryService extends BaseQLService implements DataService<WorkerCategory> {
+export class WorkerCategoryService extends BaseQlService implements DataService<WorkerCategory> {
   constructor(apollo: Apollo) {
     super(apollo);
   }

@@ -107,6 +107,9 @@ export class WorkersFormComponent implements OnInit, EntityForm<Worker, CreateWo
       category: new FormControl(this.formData.model?.category, [Validators.required]),
       position: new FormControl(this.formData.model?.position, [Validators.required]),
     });
+    if (this.formData.type.isView) {
+      this.workerForm.disable();
+    }
   }
 
   public positionCategoryDisplay(categoryPosition: WorkerPosition | WorkerCategory): string {

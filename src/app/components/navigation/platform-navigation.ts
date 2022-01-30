@@ -27,10 +27,10 @@ export const PlatformNavigation: PlatformPage[] = [
     subjects: ['Role', 'Claim']
   },
   {
-    title: localeMessages.navigation.projects,
+    title: localeMessages.navigation.workPage,
     icon: 'work_outline',
-    to: 'home',
-    subjects: 'Project'
+    to: 'projects-hub',
+    subjects: ['Project', 'Activity', 'WorkClient']
   },
   {
     title: localeMessages.navigation.tasks,

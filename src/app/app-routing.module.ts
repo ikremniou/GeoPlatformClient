@@ -14,6 +14,10 @@ import { AuthGuard } from './guards/auth/auth.guard';
 import { WorkerCategoriesComponent } from './components/workers-hub/categories/worker-categories.component';
 import { WorkerPositionsComponent } from './components/workers-hub/positions/worker-positions.component';
 import { WorkersHubComponent } from './components/workers-hub/workers-hub.component';
+import { ProjectsHubComponent } from './components/projects-hub/projects-hub.component';
+import { ProjectsComponent } from './components/projects-hub/projects/projects.component';
+import { WorkClientsComponent } from './components/projects-hub/clients/work-clients.component';
+import { ActivitiesComponent } from './components/projects-hub/activities/activities.component';
 
 const routes: Routes = [
   {
@@ -64,7 +68,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'roles',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'roles',
@@ -75,8 +79,8 @@ const routes: Routes = [
         path: 'claims',
         component: ClaimsComponent,
         canActivate: [AuthGuard],
-      }
-    ]
+      },
+    ],
   },
   {
     path: 'workers-hub',
@@ -86,7 +90,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'workers',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'workers',
@@ -102,8 +106,35 @@ const routes: Routes = [
         path: 'workers-positions',
         component: WorkerPositionsComponent,
         canActivate: [AuthGuard],
-      }
-    ]
+      },
+    ],
+  },
+  {
+    path: 'projects-hub',
+    component: ProjectsHubComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'projects',
+        pathMatch: 'full',
+      },
+      {
+        path: 'projects',
+        component: ProjectsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'clients',
+        component: WorkClientsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'activities',
+        component: ActivitiesComponent,
+        canActivate: [AuthGuard],
+      },
+    ],
   },
 ];
 

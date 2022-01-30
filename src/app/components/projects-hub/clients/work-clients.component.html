@@ -1,0 +1,8 @@
+<app-data-table [source]="this" [entity]="entity" [columns]="displayColumns" [options]="tableOptions">
+</app-data-table>
+
+<ng-template #workClientForm let-dialogRef="dialogRef" let-data>
+  <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data" [data-service]="clientService">
+    <app-work-client-form #formControl [formData]="data.form"></app-work-client-form>
+  </app-entity-dialog>
+</ng-template>

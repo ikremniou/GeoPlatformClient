@@ -1,0 +1,30 @@
+<form class="work-client-form" [formGroup]="workClientGroup">
+  <mat-form-field appearance="fill">
+    <mat-label>Название</mat-label>
+    <input matInput name="name" formControlName="name" />
+    <mat-error *ngIf="workClientGroup.hasError('required', 'name')">Обязательно введите название</mat-error>
+    <mat-error *ngIf="workClientGroup.hasError('maxlength', 'name')">
+      Максимальная длина поля - {{ maxNameLength }} символов
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Юридический адрес</mat-label>
+    <input matInput name="address" formControlName="address" />
+    <mat-error *ngIf="workClientGroup.hasError('required', 'address')">Обязательно введите адрес</mat-error>
+    <mat-error *ngIf="workClientGroup.hasError('maxlength', 'address')">
+      Максимальная длина поля - {{ maxAddressLength }} символов
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Телефон</mat-label>
+    <input matInput name="contactPhone" formControlName="contactPhone" />
+    <mat-error *ngIf="workClientGroup.hasError('required', 'contactPhone')">Обязательно введите телефон</mat-error>
+    <mat-error *ngIf="workClientGroup.hasError('maxlength', 'contactPhone')">
+      Максимальная длина поля - {{ maxPhoneLength }} символов
+    </mat-error>
+  </mat-form-field>
+
+  <mat-slide-toggle *ngIf="!formData.type.isAdd" formControlName="isActive">
+    {{ workClientGroup.controls.isActive?.value ? 'Активен' : 'Неактивен' }}
+  </mat-slide-toggle>
+</form>

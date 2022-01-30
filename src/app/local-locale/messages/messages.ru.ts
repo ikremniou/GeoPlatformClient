@@ -13,7 +13,7 @@ export const localeMessages = {
     users: 'Пользователи',
     workers: 'Сотрудники',
     security: 'Безопасность',
-    projects: 'Проекты',
+    workPage: 'Работы',
     tasks: 'Задачи',
     time: 'Время',
   },

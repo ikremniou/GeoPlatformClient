@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMaskModule } from 'ngx-mask';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +13,6 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/navigation/home/home.component';
 import { RegisterComponent } from './components/user-control/register/register.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { UserControlComponent } from './components/user-control/user-control.component';
 import { UsersViewComponent } from './components/user-control/users/users-view/users-view.component';
 import { InvitationsComponent } from './components/user-control/invitations/invitations.component';
@@ -38,8 +39,13 @@ import { WorkerCategoriesComponent } from './components/workers-hub/categories/w
 import { WorkerPositionsComponent } from './components/workers-hub/positions/worker-positions.component';
 import { WorkerCategoryFormComponent } from './components/workers-hub/categories/category-form/worker-category-form.component';
 import { WorkerPositionFormComponent } from './components/workers-hub/positions/position-form/worker-position-form.component';
-import { NgxMaskModule } from 'ngx-mask';
 import { ButtonDateViewComponent } from './components/generic/button-date-view/button-date-view.component';
+import { ProjectsHubComponent } from './components/projects-hub/projects-hub.component';
+import { WorkClientsComponent } from './components/projects-hub/clients/work-clients.component';
+import { ProjectsComponent } from './components/projects-hub/projects/projects.component';
+import { ActivitiesComponent } from './components/projects-hub/activities/activities.component';
+import { WorkClientFormComponent } from './components/projects-hub/clients/work-client-form/work-client-form.component';
+import { ProjectFormComponent } from './components/projects-hub/projects/project-form/project-form.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +77,12 @@ import { ButtonDateViewComponent } from './components/generic/button-date-view/b
     WorkerCategoryFormComponent,
     WorkerPositionFormComponent,
     ButtonDateViewComponent,
+    ProjectsHubComponent,
+    WorkClientsComponent,
+    ProjectsComponent,
+    ActivitiesComponent,
+    WorkClientFormComponent,
+    ProjectFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,7 +94,7 @@ import { ButtonDateViewComponent } from './components/generic/button-date-view/b
     FlexLayoutModule,
     GraphQLModule,
     PlatformAbilityModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     {

@@ -7,7 +7,7 @@ import { HeaderService } from 'src/app/services/header/header.service';
 import { DialogService } from 'src/app/services/ui/dialog/dialog.service';
 import { WorkerCategoryService } from 'src/app/services/worker/category/worker-category.service';
 import { workersHubMessages } from '../locale';
-import { workerCategoriesMessages } from './locale';
+import { workerCategoryMessages } from './locale';
 
 @Component({
   selector: 'app-worker-categories',
@@ -48,7 +48,7 @@ export class WorkerCategoriesComponent implements DataTableConsumer<WorkerCatego
           isAdd: true,
         },
       },
-      title: workerCategoriesMessages.addCategory,
+      title: workerCategoryMessages.addCategory,
     };
 
     return this._dialogService.open<WorkerCategory>(this.categoryForm, dialogData);
@@ -62,7 +62,7 @@ export class WorkerCategoriesComponent implements DataTableConsumer<WorkerCatego
         },
         model: category
       },
-      title: workerCategoriesMessages.viewCategory,
+      title: workerCategoryMessages.viewCategory,
     };
 
     await this._dialogService.open<WorkerCategory>(this.categoryForm, dialogData);
@@ -76,7 +76,7 @@ export class WorkerCategoriesComponent implements DataTableConsumer<WorkerCatego
         },
         model: category
       },
-      title: workerCategoriesMessages.editCategory,
+      title: workerCategoryMessages.editCategory,
     };
 
     return this._dialogService.open<WorkerCategory>(this.categoryForm, dialogData);

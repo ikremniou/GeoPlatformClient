@@ -13,7 +13,6 @@ import { CreateInvitation } from 'src/app/models/invite/create-invitation.model'
   styleUrls: ['./invitation-form.component.sass'],
 })
 export class InvitationFormComponent implements OnInit, EntityForm<Invite, CreateInvitation> {
-  public workerFilterParts = ['lastName', 'firstName', 'middleName'];
   @Input('formData')
   public formData!: EntityFormData<Invite>;
   public invitationForm!: FormGroup;

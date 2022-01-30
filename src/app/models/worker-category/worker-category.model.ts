@@ -1,11 +1,11 @@
-import { workerCategoriesMessages } from 'src/app/components/workers-hub/categories/locale';
+import { workerCategoryMessages } from 'src/app/components/workers-hub/categories/locale';
 import { TableEntity } from 'src/app/misc/data-table/entity-decorator';
 import { TableField } from 'src/app/misc/data-table/field-decorator';
 
-@TableEntity({displayName: workerCategoriesMessages.modelName })
+@TableEntity({displayName: workerCategoryMessages.modelName })
 export class WorkerCategory {
-    @TableField(workerCategoriesMessages.model.id)
+    @TableField(workerCategoryMessages.model.id)
     id!: number;
-    @TableField(workerCategoriesMessages.model.name)
+    @TableField(workerCategoryMessages.model.name)
     name!: string;
 }

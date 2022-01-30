@@ -4,7 +4,7 @@ import { ClassConstructor, plainToClass } from 'class-transformer';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export class BaseQLService {
+export class BaseQlService {
   constructor(private readonly _apollo: Apollo) {}
   protected baseAdd<T>(
     ctor: ClassConstructor<T>,
@@ -57,7 +57,7 @@ export class BaseQLService {
       );
   }
 
-  public baseDelete<T>(
+  protected baseDelete<T>(
     ctor: ClassConstructor<T>,
     mutation: DocumentNode,
     variables?: OperationVariables,

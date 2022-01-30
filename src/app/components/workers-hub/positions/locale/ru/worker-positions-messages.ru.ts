@@ -5,8 +5,8 @@ export const workerPositionsMessages = {
   editPosition: 'Изменить должность',
   baseSalarySign: 'руб.',
   model: {
+    id: '№',
     name: 'Название',
-    id: 'Идентификатор',
     baseSalary: 'Тарифный оклад',
   },
 };

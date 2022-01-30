@@ -4,7 +4,7 @@
     formControlName="worker"
     [dataService]="dataService"
     [displayWith]="displayWorker"
-    [entityParts]="workerFilterParts"
+    [entityParts]="['lastName', 'firstName', 'middleName']"
     [errors]="[{ error: 'required', template: requiredWorker }]">
   </app-entity-select>
   <ng-template #requiredWorker>Обязательно выберите рабочего</ng-template>
