@@ -1,6 +1,6 @@
 <app-data-table
   [source]="this"
-  [entity]="entityClass"
+  [entity]="entity"
   [columns]="displayColumns"
   [options]="tableOptions"
   [templates]="[
@@ -22,11 +22,11 @@
 </ng-template>
 
 <ng-template #birthdayTemplate let-dataEntry="dataEntry">
-  <app-button-date-view [date]="dataEntry.birthday"></app-button-date-view>
+  <app-date-view type='tap-button' [date]="dataEntry.birthday"></app-date-view>
 </ng-template>
 
 <ng-template #hiredDateTemplate let-dataEntry="dataEntry">
-  <app-button-date-view [date]="dataEntry.hiredDate"></app-button-date-view>
+  <app-date-view type='tap-button' [date]="dataEntry.hiredDate"></app-date-view>
 </ng-template>
 
 <ng-template #categoryTemplate let-dataEntry="dataEntry">

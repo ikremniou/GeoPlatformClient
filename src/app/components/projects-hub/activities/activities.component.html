@@ -1,1 +1,17 @@
-<p>activities works!</p>
+<app-data-table
+  [source]="this"
+  [entity]="entity"
+  [columns]="displayColumns"
+  [options]="tableOptions"
+  [templates]="[['project', projectView]]">
+</app-data-table>
+
+<ng-template #activityForm let-dialogRef="dialogRef" let-data>
+  <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data" [data-service]="activityService">
+    <app-activity-form #formControl [formData]="data.form"></app-activity-form>
+  </app-entity-dialog>
+</ng-template>
+
+<ng-template #projectView let-dataEntry="dataEntry">
+  {{ dataEntry.project.summary }}
+</ng-template>

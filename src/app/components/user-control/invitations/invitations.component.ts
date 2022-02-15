@@ -23,7 +23,7 @@ export class InvitationsComponent implements DataTableConsumer<Invite> {
 
   public entity = Invite;
   public displayColumns = ['id', 'worker'];
-  public dataTableOptions: DataTableOptions = { actions: { delete: true, add: true, view: true } };
+  public tableOptions: DataTableOptions = { actions: { delete: true, add: true, view: true } };
 
   constructor(
     private readonly _router: Router,

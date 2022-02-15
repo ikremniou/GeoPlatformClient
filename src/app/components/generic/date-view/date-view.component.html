@@ -1,4 +1,4 @@
-<button mat-flat-button (click)="picker.open()">
+<button *ngIf="date" mat-flat-button (click)="picker.open()">
   <input class="hidden" [min]="date" [max]="date" [matDatepicker]="picker" [readonly]="true" [value]="date" />
   <mat-datepicker #picker [restoreFocus]="false"></mat-datepicker>
   <span>

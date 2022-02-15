@@ -1,4 +1,4 @@
 export const projectFormConstants = {
-  maxNameLength: 300,
-  maxSummaryLength: 1000,
+  maxSummaryLength: 300,
+  maxDescriptionLength: 1000,
 };

@@ -11,10 +11,24 @@ const GetAll = gql`
   query GetAll($filter: String, $skip: Int, $take: Int) {
     projects(filter: $filter, skip: $skip, take: $take) {
       id
-      name
       summary
+      description
       startDate
       endDate
+      client {
+        id
+        name
+      }
+      executor {
+        id
+        name
+      }
+      responsible {
+        id
+        firstName
+        lastName
+        middleName
+      }
     }
   }
 `;
@@ -23,7 +37,24 @@ const Delete = gql`
   mutation Remove($projectId: Int!) {
     removeProject(id: $projectId) {
       id
-      name
+      summary
+      description
+      startDate
+      endDate
+      client {
+        id
+        name
+      }
+      executor {
+        id
+        name
+      }
+      responsible {
+        id
+        firstName
+        lastName
+        middleName
+      }
     }
   }
 `;
@@ -32,7 +63,24 @@ const Add = gql`
   mutation Add($project: CreateProjectInput!) {
     createProject(createProjectInput: $project) {
       id
-      name
+      summary
+      description
+      startDate
+      endDate
+      client {
+        id
+        name
+      }
+      executor {
+        id
+        name
+      }
+      responsible {
+        id
+        firstName
+        lastName
+        middleName
+      }
     }
   }
 `;
@@ -41,7 +89,24 @@ const Patch = gql`
   mutation Update($project: UpdateProjectInput!) {
     updateProject(updateProjectInput: $project) {
       id
-      name
+      summary
+      description
+      startDate
+      endDate
+      client {
+        id
+        name
+      }
+      executor {
+        id
+        name
+      }
+      responsible {
+        id
+        firstName
+        lastName
+        middleName
+      }
     }
   }
 `;

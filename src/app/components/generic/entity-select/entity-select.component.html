@@ -4,6 +4,7 @@
     matInput
     type="text"
     name="entity"
+    (focus)="inputFocused()"
     (blur)="markAsTouched()"
     [readonly]="readonly"
     [matAutocompleteDisabled]="readonly"

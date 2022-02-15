@@ -1,21 +1,21 @@
 import { projectMessages } from 'src/app/components/projects-hub/projects/locale';
 import { TableEntity } from 'src/app/misc/data-table/entity-decorator';
 import { TableField } from 'src/app/misc/data-table/field-decorator';
-import { Activity } from '../activity.model';
+import { Activity } from '../activity/activity.model';
 import { WorkClient } from '../client/work-client.model';
 
 @TableEntity({ displayName: projectMessages.modelName })
 export class Project {
   @TableField(projectMessages.model.id)
   id!: number;
-  @TableField(projectMessages.model.name)
-  name!: string;
   @TableField(projectMessages.model.summary)
-  summary?: string;
+  summary!: string;
+  @TableField(projectMessages.model.description)
+  description?: string;
   @TableField(projectMessages.model.startDate)
   startDate!: Date;
   @TableField(projectMessages.model.endDate)
-  endDate!: Date;
+  endDate?: Date;
   @TableField(projectMessages.model.client)
   client!: WorkClient;
   @TableField(projectMessages.model.executor)

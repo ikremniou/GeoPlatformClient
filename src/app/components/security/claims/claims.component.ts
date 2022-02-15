@@ -12,7 +12,7 @@ import { claimsMessages } from './locale';
   styleUrls: ['./claims.component.sass'],
 })
 export class ClaimsComponent implements DataTableConsumer<Claim> {
-  public entityClass = Claim;
+  public entity = Claim;
   public displayColumns = ['id', 'action', 'subject'];
   public tableOptions: DataTableOptions = {};
 

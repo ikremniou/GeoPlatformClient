@@ -1,0 +1,8 @@
+<app-data-table [source]="this" [entity]="entity" [columns]="displayColumns" [options]="tableOptions">
+</app-data-table>
+
+<ng-template #timeReportForm let-dialogRef="dialogRef" let-data>
+  <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data" [data-service]="timeReportService">
+    <app-time-report-form #formControl [formData]="data.form"></app-time-report-form>
+  </app-entity-dialog>
+</ng-template>

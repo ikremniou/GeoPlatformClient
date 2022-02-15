@@ -23,7 +23,16 @@ export class ProjectsComponent implements DataTableConsumer<Project> {
       view: true,
     },
   };
-  public displayColumns = ['id', 'name', 'summary', 'startDate', 'endDate']
+  public displayColumns = [
+    'id',
+    'summary',
+    'description',
+    'startDate',
+    'endDate',
+    'client',
+    'executor',
+    'responsible',
+  ];
 
   @ViewChild('projectForm')
   public projectForm!: TemplateRef<any>;
@@ -54,14 +63,34 @@ export class ProjectsComponent implements DataTableConsumer<Project> {
   }
 
   public edit(entity: Project): Promise<Project> {
-    throw new Error('Method not implemented.');
+    const dialogData: DialogData<Project> = {
+      form: {
+        type: {
+          isEdit: true,
+        },
+        model: entity,
+      },
+      title: projectMessages.editProject,
+    };
+
+    return this._dialogService.open<Project>(this.projectForm, dialogData);
   }
 
-  public view(entity: Project): Promise<void> {
-    throw new Error('Method not implemented.');
+  public async view(entity: Project): Promise<void> {
+    const dialogData: DialogData<Project> = {
+      form: {
+        type: {
+          isView: true,
+        },
+        model: entity,
+      },
+      title: projectMessages.viewProject,
+    };
+
+    await this._dialogService.open<Project>(this.projectForm, dialogData);
   }
 
-  public delete(entity: Project): Promise<void> {
-    throw new Error('Method not implemented.');
+  public async delete(entity: Project): Promise<void> {
+    await this.projectService.delete(entity).toPromise();
   }
 }

@@ -18,6 +18,9 @@ import { ProjectsHubComponent } from './components/projects-hub/projects-hub.com
 import { ProjectsComponent } from './components/projects-hub/projects/projects.component';
 import { WorkClientsComponent } from './components/projects-hub/clients/work-clients.component';
 import { ActivitiesComponent } from './components/projects-hub/activities/activities.component';
+import { TimeHubComponent } from './components/time-hub/time-hub.component';
+import { TimeReportsComponent } from './components/time-hub/time-reports/time-reports.component';
+import { MonthlySalaryComponent } from './components/time-hub/monthly-salary/monthly-salary.component';
 
 const routes: Routes = [
   {
@@ -132,6 +135,28 @@ const routes: Routes = [
       {
         path: 'activities',
         component: ActivitiesComponent,
+        canActivate: [AuthGuard],
+      },
+    ],
+  },
+  {
+    path: 'time-hub',
+    component: TimeHubComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'time-reports',
+        pathMatch: 'full',
+      },
+      {
+        path: 'time-reports',
+        component: TimeReportsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'monthly-salary',
+        component: MonthlySalaryComponent,
         canActivate: [AuthGuard],
       },
     ],

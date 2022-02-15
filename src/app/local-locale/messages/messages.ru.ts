@@ -14,7 +14,6 @@ export const localeMessages = {
     workers: 'Сотрудники',
     security: 'Безопасность',
     workPage: 'Работы',
-    tasks: 'Задачи',
     time: 'Время',
   },
 };

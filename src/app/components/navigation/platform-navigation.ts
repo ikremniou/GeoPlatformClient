@@ -33,14 +33,8 @@ export const PlatformNavigation: PlatformPage[] = [
     subjects: ['Project', 'Activity', 'WorkClient']
   },
   {
-    title: localeMessages.navigation.tasks,
-    icon: 'done_outline',
-    to: 'home',
-    subjects: 'Task'
-  },
-  {
     title: localeMessages.navigation.time,
     icon: 'access_time',
-    to: 'home',
+    to: 'time-hub',
   },
 ];

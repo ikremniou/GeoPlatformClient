@@ -1,0 +1,29 @@
+<form class="activity-form" [formGroup]="activityForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Название</mat-label>
+    <input matInput name="summary" formControlName="summary" />
+    <mat-error *ngIf="activityForm.hasError('required', 'summary')">Обязательно введите название</mat-error>
+    <mat-error *ngIf="activityForm.hasError('maxlength', 'summary')">
+      Максимальная длина названия - {{ maxSummaryLength }} символов
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Описание</mat-label>
+    <textarea matInput name="description" formControlName="description"></textarea>
+    <mat-error *ngIf="activityForm.hasError('required', 'description')">Обязательно введите название</mat-error>
+    <mat-error *ngIf="activityForm.hasError('maxlength', 'description')">
+      Максимальная длина описания - {{ maxDescriptionLength }} символов
+    </mat-error>
+  </mat-form-field>
+
+  <app-entity-select
+    label="Выберите проект"
+    formControlName="project"
+    [dataService]="projectService"
+    [displayWith]="projectDisplay"
+    [entityParts]="['summary']"
+    [errors]="[{ error: 'required', template: requiredProject }]">
+  </app-entity-select>
+  <ng-template #requiredProject>Обязательно выберите проект</ng-template>
+</form>

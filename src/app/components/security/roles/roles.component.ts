@@ -18,7 +18,7 @@ import { rolesMessages } from './locale';
 export class RolesComponent implements DataTableConsumer<Role> {
   @ViewChild('rolesForm')
   public rolesForm!: TemplateRef<any>;
-  public entityClass = Role;
+  public entity = Role;
   public displayColumns = ['id', 'name', 'claims'];
   public tableOptions: DataTableOptions = {
     actions: {

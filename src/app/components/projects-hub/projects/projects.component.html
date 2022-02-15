@@ -1,8 +1,39 @@
-<app-data-table [source]="this" [entity]="entity" [columns]="displayColumns" [options]="tableOptions">
+<app-data-table
+  [source]="this"
+  [entity]="entity"
+  [columns]="displayColumns"
+  [options]="tableOptions"
+  [templates]="[
+    ['startDate', startDateTemplate],
+    ['client', clientTemplate],
+    ['executor', executorTemplate],
+    ['responsible', responsibleTemplate],
+    ['endDate', endDateTemplate]
+  ]">
 </app-data-table>
 
-<ng-template #workClientForm let-dialogRef="dialogRef" let-data>
+<ng-template #projectForm let-dialogRef="dialogRef" let-data>
   <app-entity-dialog [dialog-ref]="dialogRef" [dialog-data]="data" [data-service]="projectService">
     <app-project-form #formControl [formData]="data.form"></app-project-form>
   </app-entity-dialog>
+</ng-template>
+
+<ng-template #startDateTemplate let-dataEntry="dataEntry">
+  <app-date-view type="tap-button" [date]="dataEntry.startDate"></app-date-view>
+</ng-template>
+
+<ng-template #endDateTemplate let-dataEntry="dataEntry">
+  <app-date-view type="tap-button" [date]="dataEntry.endDate"></app-date-view>
+</ng-template>
+
+<ng-template #clientTemplate let-dataEntry="dataEntry">
+  {{ dataEntry.client.name }}
+</ng-template>
+
+<ng-template #executorTemplate let-dataEntry="dataEntry">
+  {{ dataEntry.executor.name }}
+</ng-template>
+
+<ng-template #responsibleTemplate let-dataEntry="dataEntry">
+  {{ dataEntry.responsible.lastName }} {{ dataEntry.responsible.firstName }}
 </ng-template>

@@ -17,7 +17,7 @@ export class UsersViewComponent implements OnInit, DataTableConsumer<User> {
   @ViewChild('editUser') public editUserRef!: TemplateRef<any>;
   public entity = User;
   public displayColumns: string[] = ['id', 'username', 'email', 'status'];
-  public dataTableOptions: DataTableOptions = { actions: { edit: true } };
+  public tableOptions: DataTableOptions = { actions: { edit: true } };
 
   constructor(
     public readonly userService: UserService,

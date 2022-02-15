@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { EntityForm } from 'src/app/misc/entity-form';
+import { BaseFormComponent } from 'src/app/components/generic/base-form/base-form.components';
 import { EntityFormData } from 'src/app/misc/entity-form-data';
 import { WorkerCategory } from 'src/app/models/worker-category/worker-category.model';
 import { WorkerPosition } from 'src/app/models/worker-position/worker-position.model';
@@ -17,7 +17,7 @@ import { workerViewMessages } from '../locale/ru/worker-view-messages.ru';
   templateUrl: './worker-form.component.html',
   styleUrls: ['./worker-form.component.sass'],
 })
-export class WorkersFormComponent implements OnInit, EntityForm<Worker, CreateWorker> {
+export class WorkersFormComponent extends BaseFormComponent<Worker, CreateWorker> implements OnInit {
   public localMobilePrefix = workerViewMessages.mobilePrefix;
   public localMobileMask = workerViewMessages.mobileMask;
   public maxFirstNameLength = workerConstants.maxFirstNameLength;
@@ -49,7 +49,9 @@ export class WorkersFormComponent implements OnInit, EntityForm<Worker, CreateWo
   constructor(
     public readonly positionService: WorkerPositionService,
     public readonly categoryService: WorkerCategoryService,
-  ) {}
+  ) {
+    super();
+  }
 
   public isValid(): boolean {
     return this.workerForm.valid;
@@ -69,7 +71,7 @@ export class WorkersFormComponent implements OnInit, EntityForm<Worker, CreateWo
       firedDate: this.workerForm.value.firedDate,
       homePhone: this.workerForm.value.homePhone,
       mobilePhone: this.workerForm.value.mobilePhone,
-    }
+    };
 
     if (this.formData.type.isEdit) {
       (entity as UpdateWorker).id = this.formData.model!.id;
@@ -117,12 +119,5 @@ export class WorkersFormComponent implements OnInit, EntityForm<Worker, CreateWo
       return categoryPosition.name;
     }
     return '';
-  }
-
-  public isOptionalVisible(name: keyof Worker): boolean {
-    if (this.formData.type.isView && !this.formData.model?.[name]) {
-      return false;
-    }
-    return true;
   }
 }

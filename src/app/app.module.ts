@@ -39,13 +39,18 @@ import { WorkerCategoriesComponent } from './components/workers-hub/categories/w
 import { WorkerPositionsComponent } from './components/workers-hub/positions/worker-positions.component';
 import { WorkerCategoryFormComponent } from './components/workers-hub/categories/category-form/worker-category-form.component';
 import { WorkerPositionFormComponent } from './components/workers-hub/positions/position-form/worker-position-form.component';
-import { ButtonDateViewComponent } from './components/generic/button-date-view/button-date-view.component';
+import { DateViewComponent } from './components/generic/date-view/date-view.component';
 import { ProjectsHubComponent } from './components/projects-hub/projects-hub.component';
 import { WorkClientsComponent } from './components/projects-hub/clients/work-clients.component';
 import { ProjectsComponent } from './components/projects-hub/projects/projects.component';
 import { ActivitiesComponent } from './components/projects-hub/activities/activities.component';
 import { WorkClientFormComponent } from './components/projects-hub/clients/work-client-form/work-client-form.component';
 import { ProjectFormComponent } from './components/projects-hub/projects/project-form/project-form.component';
+import { ActivityFormComponent } from './components/projects-hub/activities/activity-form/activity-form.component';
+import { TimeHubComponent } from './components/time-hub/time-hub.component';
+import { TimeReportsComponent } from './components/time-hub/time-reports/time-reports.component';
+import { MonthlySalaryComponent } from './components/time-hub/monthly-salary/monthly-salary.component';
+import { TimeReportFormComponent } from './components/time-hub/time-reports/time-report-form/time-report-form.component';
 
 @NgModule({
   declarations: [
@@ -76,13 +81,18 @@ import { ProjectFormComponent } from './components/projects-hub/projects/project
     WorkerPositionsComponent,
     WorkerCategoryFormComponent,
     WorkerPositionFormComponent,
-    ButtonDateViewComponent,
+    DateViewComponent,
     ProjectsHubComponent,
     WorkClientsComponent,
     ProjectsComponent,
     ActivitiesComponent,
     WorkClientFormComponent,
     ProjectFormComponent,
+    ActivityFormComponent,
+    TimeHubComponent,
+    TimeReportsComponent,
+    MonthlySalaryComponent,
+    TimeReportFormComponent,
   ],
   imports: [
     BrowserModule,

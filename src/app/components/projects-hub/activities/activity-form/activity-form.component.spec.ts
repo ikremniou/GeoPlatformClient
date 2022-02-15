@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ButtonDateViewComponent } from './button-date-view.component';
+import { ActivityFormComponent } from './activity-form.component';
 
-describe('ButtonDateViewComponent', () => {
-  let component: ButtonDateViewComponent;
-  let fixture: ComponentFixture<ButtonDateViewComponent>;
+describe('ActivityFormComponent', () => {
+  let component: ActivityFormComponent;
+  let fixture: ComponentFixture<ActivityFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ButtonDateViewComponent ]
+      declarations: [ ActivityFormComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ButtonDateViewComponent);
+    fixture = TestBed.createComponent(ActivityFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

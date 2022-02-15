@@ -1,12 +1,6 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import {
-  AbstractControl,
-  ControlContainer,
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { ControlContainer, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
 import { DataService } from 'src/app/misc/service/data-service';
 import {
@@ -29,7 +23,7 @@ import {
 })
 export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAccessor {
   @Input('dataService')
-  public dataService!: DataService<EntityType>;
+  public dataService!: DataService<any>;
   @Input('displayWith')
   public displayWith!: (value: EntityType) => string;
   @Input('entityParts')
@@ -51,41 +45,17 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
 
   public isLoading = false;
   public noDataFound = false;
+  public isSubscribed = false;
   public entitySelected?: (entityType: EntityType) => void;
-  public entityControl: FormControl;
+  public entityControl: FormControl = new FormControl();
   public filteredEntities: Array<EntityType> = [];
   public onTouchedCallback!: () => void;
-  public isTouched: boolean = false;
+  private _getFilteredItems?: Subscription;
 
   constructor(
     private readonly _controlContainer: ControlContainer,
     private readonly _filterService: FilterAggregatorService,
-  ) {
-    this.entityControl = new FormControl();
-    this.entityControl.valueChanges
-      .pipe(
-        tap((input) => {
-          this.filteredEntities = [];
-          this.noDataFound = false;
-          this.isLoading = true;
-          if (input && typeof input !== 'string') {
-            this.markAsTouched();
-            this.entitySelected?.(input);
-          }
-        }),
-        filter((input) => input),
-        debounceTime(500),
-      )
-      .subscribe((filterInput) => {
-        this.filterEntities(filterInput).subscribe((filteredEntities) => {
-          if (filteredEntities?.length === 0) {
-            this.noDataFound = true;
-          }
-          this.filteredEntities = filteredEntities;
-          this.isLoading = false;
-        });
-      });
-  }
+  ) {}
 
   get outerControl(): FormControl {
     return this._controlContainer.control?.get(this.formControlName) as FormControl;
@@ -97,6 +67,7 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
 
   public writeValue(obj: any): void {
     this.entityControl.setValue(obj);
+    this.subscribeToValueChanges();
   }
 
   public registerOnChange(fn: any): void {
@@ -116,23 +87,65 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
   }
 
   public markAsTouched(): void {
-    if (this.isTouched) {
-      this.onTouchedCallback();
-      this.isTouched = true;
+    this.onTouchedCallback();
+  }
+
+  public inputFocused(): void {
+    if (!this.entityControl.value || typeof this.entityControl.value === 'string') {
+      this.getEntitiesWithFilter(this.entityControl.value);
     }
   }
 
-  private filterEntities(filterInput: string | EntityType): Observable<EntityType[]> {
+  private subscribeToValueChanges(): void {
+    if (this.isSubscribed) {
+      return;
+    }
+
+    this.isSubscribed = true;
+    this.entityControl.valueChanges
+      .pipe(
+        tap((input) => {
+          this.filteredEntities = [];
+          this.noDataFound = false;
+          this.isLoading = true;
+          if (input && typeof input !== 'string') {
+            this.entitySelected?.(input);
+          }
+        }),
+        filter((input) => {
+          if (typeof input === 'object') {
+            this.filteredEntities = [input];
+            this.isLoading = false;
+            return false;
+          }
+          return true;
+        }),
+        debounceTime(500),
+      )
+      .subscribe((filterInput) => {
+        this.getEntitiesWithFilter(filterInput);
+      });
+  }
+
+  private getEntitiesWithFilter(filterInput: string) {
+    if (this._getFilteredItems) {
+      this._getFilteredItems.unsubscribe();
+    }
+
+    this._getFilteredItems = this.filterEntities(filterInput).subscribe((filteredEntities) => {
+      if (filteredEntities?.length === 0) {
+        this.noDataFound = true;
+      }
+      this.filteredEntities = filteredEntities;
+      this.isLoading = false;
+    });
+  }
+
+  private filterEntities(filterInput: string): Observable<EntityType[]> {
     if (filterInput) {
       let filterParts: string[] = [];
-      if (typeof filterInput === 'string') {
-        if (this.entityParts.length > 0) {
-          filterParts = filterInput.split(' ');
-        }
-      } else {
-        this.entityParts.forEach((entityPart) => {
-          filterParts.push(String(filterInput[entityPart]));
-        });
+      if (this.entityParts.length > 0) {
+        filterParts = filterInput.split(' ');
       }
 
       const filter = this._filterService.getFilter(
@@ -141,7 +154,8 @@ export class EntitySelectComponent<EntityType> implements OnInit, ControlValueAc
         this.entityParts as string[],
         filterParts,
       );
-      return this.dataService.getAll(filter);
+      const serializedFilter = JSON.stringify(filter);
+      return this.dataService.getAll(serializedFilter);
     }
     return this.dataService.getAll();
   }

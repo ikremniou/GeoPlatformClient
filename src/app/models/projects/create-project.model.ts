@@ -1,6 +1,6 @@
 export class CreateProject {
-  name!: string;
-  summary?: string;
+  summary!: string;
+  description?: string;
   startDate!: Date;
   endDate!: Date;
   executorId!: number;

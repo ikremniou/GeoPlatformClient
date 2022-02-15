@@ -16,7 +16,7 @@ import { workerViewMessages } from './locale/ru/worker-view-messages.ru';
 export class WorkersViewComponent implements DataTableConsumer<Worker> {
   @ViewChild('workerForm')
   public workerFormTemplate!: TemplateRef<any>;
-  public entityClass = Worker;
+  public entity = Worker;
   public displayColumns = [
     'id',
     'lastName',

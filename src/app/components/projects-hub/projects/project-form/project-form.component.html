@@ -1,1 +1,77 @@
-<p>project-form works!</p>
+<form class="project-form" [formGroup]="projectForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Название</mat-label>
+    <input matInput name="summary" formControlName="summary" />
+    <mat-error *ngIf="projectForm.hasError('required', 'summary')">Обязательно введите название</mat-error>
+    <mat-error *ngIf="projectForm.hasError('maxlength', 'summary')">
+      Максимальная длина названия - {{ maxSummaryLength }} символов
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Описание</mat-label>
+    <textarea matInput name="description" formControlName="description"></textarea>
+    <mat-error *ngIf="projectForm.hasError('maxlength', 'description')">
+      Максимальная длина описания - {{ maxDescriptionLength }} символов
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Начало работ</mat-label>
+    <input matInput formControlName="startDate" [matDatepicker]="startDate" />
+    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+    <mat-datepicker #startDate></mat-datepicker>
+    <mat-error *ngIf="projectForm.hasError('matDatepickerParse', 'startDate')">
+      Введите дату в формате: дд.мм.гггг
+    </mat-error>
+    <mat-error *ngIf="projectForm.hasError('required', 'startDate')"> Обязательное поле </mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="isOptionalVisible('endDate') && formData.type.isEdit" appearance="fill">
+    <mat-label>Окончание работ</mat-label>
+    <input
+      matInput
+      formControlName="endDate"
+      [min]="projectForm.controls.startDate.value"
+      [matDatepicker]="endDatePicker" />
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+    <mat-error *ngIf="projectForm.hasError('matDatepickerParse', 'endDate')">
+      Введите дату в формате: дд.мм.гггг
+    </mat-error>
+
+    <mat-error *ngIf="projectForm.hasError('matDatepickerMin', 'endDate')">
+      Меньше даты начала работ
+    </mat-error>
+  </mat-form-field>
+
+  <app-entity-select
+    label="Выберите заказчика"
+    formControlName="client"
+    [dataService]="clientService"
+    [displayWith]="workClientDisplay"
+    [entityParts]="['name']"
+    [errors]="[{ error: 'required', template: requiredClient }]">
+  </app-entity-select>
+  <ng-template #requiredClient>Обязательно выберите заказчика</ng-template>
+
+  <app-entity-select
+    label="Выберите исполнителя"
+    formControlName="executor"
+    [dataService]="clientService"
+    [displayWith]="workClientDisplay"
+    [entityParts]="['name']"
+    [errors]="[{ error: 'required', template: requiredExecutor }]">
+  </app-entity-select>
+  <ng-template #requiredExecutor>Обязательно выберите исполнителя</ng-template>
+
+  <app-entity-select
+    label="Выберите ответственного"
+    formControlName="responsible"
+    [dataService]="workerService"
+    [displayWith]="workerDisplay"
+    [entityParts]="['lastName', 'firstName', 'middleName']"
+    [errors]="[{ error: 'required', template: requiredResponsible }]">
+  </app-entity-select>
+  <ng-template #requiredResponsible>Обязательно выберите ответственного</ng-template>
+</form>

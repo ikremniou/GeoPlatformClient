@@ -3,8 +3,8 @@ export const projectMessages = {
   modelName: 'Проект',
   model: {
     id: '№',
-    name: 'Название',
-    summary: 'Описание',
+    summary: 'Название',
+    description: 'Описание',
     startDate: 'Начало работ',
     endDate: 'Окончание работ',
     executor: 'Исполнитель',
